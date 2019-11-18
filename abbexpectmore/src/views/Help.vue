@@ -1,7 +1,15 @@
 <template>
-  <div class="help" id="Body">
-    <h1>Help page</h1>
-  </div>
+  <v-container>
+    <v-layout text-center wrap>
+      <v-flex xs12>
+        <v-layout justify-center id="Body">
+          <h1>
+            Help Page
+          </h1>
+        </v-layout>
+      </v-flex>
+    </v-layout>
+  </v-container>
 </template>
 
 <style>

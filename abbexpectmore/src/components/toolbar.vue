@@ -6,7 +6,7 @@
           alt="Vuetify Logo"
           class="shrink mr-2"
           contain
-          src="https://avatars3.githubusercontent.com/u/57906616?s=400&u=efdb1bd1861ee999838490bb1629091b155ff437&v=4"
+          src="@/assets/logo.png"
           transition="scale-transition"
           width="40"
         />
