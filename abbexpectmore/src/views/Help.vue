@@ -1,19 +1,14 @@
 <template>
-    <v-app>
-        <v-content>
-
-            
-
-        </v-content>
-    </v-app>
+  <div class="help" id="Body">
+    <h1>Help page</h1>
+  </div>
 </template>
 
-<script>
-export default {
-
-}
-</script>
-
 <style>
+
+#Body {
+  color: rgb(255, 255, 255);
+  font-size:20px;
+}
 
 </style>

@@ -1,31 +1,41 @@
 import Vue from 'vue'
-import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
+import Router from 'vue-router'
+// import Home from '@/views/Home.vue'
+import paths from "./paths";
 
-Vue.use(VueRouter)
+function route(path, view, name, ) {
+  return {
+    name,
+    view,
+    path,
+    component: resovle => import(`@/views/${view}.vue`).then(resovle)
+  };
+}
 
-const routes = [
-  {
-    path: '/',
-    name: 'home',
-    component: Home
-  },
-  {
-    path: '/about',
-    name: 'about',
-    component: () => import('../views/About.vue')
-  },
-  {
-    path: '/help',
-    name: 'help',
-    component: () => import('../views/Help.vue')
+Vue.use(Router);
+
+let router = new Router({
+  mode: "history",
+  routes: paths
+    .map(path => route(path.path, path.view, path.name, path.props))
+    .concat([{
+      path: "*",
+      redirect: "/"
+    }]),
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition;
+    }
+    if (to.hash) {
+      return {
+        selector: to.hash
+      };
+    }
+    return {
+      x: 0,
+      y: 0
+    };
   }
-]
-
-const router = new VueRouter({
-  mode: 'history',
-  base: process.env.BASE_URL,
-  routes
-})
+});
 
 export default router
