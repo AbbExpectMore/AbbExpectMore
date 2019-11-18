@@ -8,7 +8,7 @@
           contain
           src="@/assets/logo.png"
           transition="scale-transition"
-          width="40"
+          width="100"
         />
         </v-toolbar-title>
 
