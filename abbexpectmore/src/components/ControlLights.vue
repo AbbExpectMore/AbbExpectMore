@@ -3,7 +3,7 @@
     <v-layout text-center wrap>
       <v-flex xs12>
         <v-layout justify-center id="Body">
-          <h1> Use this page to control lights</h1>
+          <h1> Use this page to control lights<br>More is comming soon!</h1>
         </v-layout>
       </v-flex>
     </v-layout>
