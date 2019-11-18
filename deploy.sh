@@ -41,9 +41,6 @@ echo
 echo "##############################"
 
 # if you are deploying to https://<USERNAME>.github.io
-git push -f git@github.com:flexienok/AbbExpectMore.github.io.git master
-
-# if you are deploying to https://<USERNAME>.github.io/<REPO>
-# git push -f git@github.com:flexienok/flexienok.github.io.git master:master
+git push -f git@github.com:AbbExpectMore/AbbExpectMore.github.io.git master
 
 cd -
