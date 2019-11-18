@@ -3,6 +3,8 @@
 # abort on errors
 set -e
 
+cd abbexpectmore
+
 # build
 echo "##############################"
 echo
