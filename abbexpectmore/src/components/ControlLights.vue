@@ -6,8 +6,10 @@
           <v-text-field dark v-model="user" label="Username" required></v-text-field>
           <v-text-field dark v-model="pass" label="Password" type="password" required></v-text-field>
           <v-text-field dark v-model="message" label="Message" required></v-text-field>
+          <v-text-field dark v-model="value" label="Value" required></v-text-field>
           <v-btn dark :disabled="Boolean(connected)" @click="connect()">Connect</v-btn>
           <v-btn dark :disabled="!Boolean(connected)" @click="send()">Send</v-btn>
+          <v-btn dark :disabled="!Boolean(connected)" @click="uValue()">uValue</v-btn>
           <v-btn dark @click="test()">Test</v-btn>
           <v-alert :type="Alert_type" v-if="Alert">{{ Alert_text }}</v-alert>
         </v-form>
@@ -27,12 +29,13 @@ export default {
     counter: 0,
     connected: false,
     client: undefined,
-    user: "lisa.engstrom@abbindustrigymnasium.se",
-    pass: "Hugoma02",
+    user: "abbexpectmore@gmail.com",
+    pass: "ABBExpectMore2020",
     message: "",
     Alert: false,
     Alert_type: "warning",
-    Alert_text: "Could not connect to broker :(("
+    Alert_text: "Could not connect to broker :((",
+    value: undefined,
   }),
   methods: {
     connect() {
@@ -71,9 +74,16 @@ export default {
     },
     send() {
       this.client.publish(
-        "lisa.engstrom@abbindustrigymnasium.se/mess",
+        "abbexpectmore@gmail.com/light",
         this.message
       );
+    },
+    uValue(){
+      this.client.publish(
+        "abbexpectmore@gmail.com/ctrl",
+        this.value
+      )
+      console.log(this.value)
     },
     test(){
       console.log(this.Alert)
