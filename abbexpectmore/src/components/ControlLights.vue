@@ -1,6 +1,6 @@
 <template>
   <v-row align="start" justify="space-around" no-gutters>
-    <v-col cols="3">
+    <v-col cols="4">
       <!-- <v-flex xs12> -->
       <v-card dark class="ma-4 grey darken-3">
         <v-form class="ma-4 pa-3">
@@ -26,8 +26,8 @@
           </v-col>
           <v-text-field v-if="mode == 'Color Wheel'" dark v-model="value" label="Value" required></v-text-field>
 
-          <color-picker v-model="color"></color-picker>
-          <p>
+          <color-picker v-model="color" v-if="mode == 'Color Wheel'"></color-picker>
+          <p dark v-if="mode == 'Color Wheel'">
             Color:
             <input v-model="color" type="text" />
           </p>
@@ -53,7 +53,9 @@ var mqtt = require("mqtt"),
 
 export default {
   name: "ControlLights",
-
+  components: {
+            ColorPicker
+        },
   data: () => ({
     counter: 0,
     connected: false,
@@ -67,7 +69,8 @@ export default {
     value: undefined,
     mode: undefined,
     switch1: false,
-    ch: 0
+    ch: 0,
+    color: undefined
   }),
   methods: {
     connect() {
