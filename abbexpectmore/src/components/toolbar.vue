@@ -10,7 +10,7 @@
           transition="scale-transition"
           width="100"
         />
-        </v-toolbar-title>
+      </v-toolbar-title>
 
       <v-spacer></v-spacer>
 

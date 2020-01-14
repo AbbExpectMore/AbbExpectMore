@@ -6,15 +6,16 @@
         <v-form class="ma-4 pa-3">
           <v-text-field dark v-model="user" label="Username" required></v-text-field>
           <v-text-field dark v-model="pass" label="Password" type="password" required></v-text-field>
-          <v-btn dark :disabled="Boolean(connected)" @click="connect()">Connect</v-btn>
-          <v-btn v-if="mode == 'On/Off'" dark :disabled="!Boolean(connected)" @click="send()">Send</v-btn>
+          <v-row align="start" justify="space-around" no-gutters>
+            <v-btn style="transform: scale(1.25)" dark :disabled="Boolean(connected)" @click="connect()">Connect</v-btn>
+          </v-row>
           <!-- <p class="white--text">{{ mode || 'null' }}</p> -->
           <v-radio-group dark v-model="mode" :mandatory="false">
             <v-radio label="On/Off" value="On/Off"></v-radio>
             <v-radio label="Color Wheel" value="Color Wheel"></v-radio>
           </v-radio-group>
           <!-- <v-text-field v-if="mode == 'On/Off'" dark v-model="message" label="Message" required></v-text-field> -->
-          <v-col cols="2">
+          <v-row align="start" justify="space-around" no-gutters>
             <v-switch
               :disabled="!Boolean(connected)"
               color="#f3952d"
@@ -23,21 +24,26 @@
               style="transform: scale(2)"
               @change="ono()"
             ></v-switch>
-          </v-col>
-          <v-text-field v-if="mode == 'Color Wheel'" dark v-model="value" label="Value" required></v-text-field>
+          </v-row>
 
+          <v-row align="start" justify="space-around" no-gutters>
           <color-picker v-model="color" v-if="mode == 'Color Wheel'"></color-picker>
+          </v-row>
           <p dark v-if="mode == 'Color Wheel'">
             Color:
             <input v-model="color" type="text" />
           </p>
 
-          <v-btn
-            v-if="mode == 'Color Wheel'"
-            dark
-            :disabled="!Boolean(connected)"
-            @click="uValue()"
-          >Send</v-btn>
+          <v-row align="start" justify="space-around" no-gutters>
+            <v-btn
+              v-if="mode == 'Color Wheel'"
+              dark
+              :disabled="!Boolean(connected)"
+              @click="uValue()"
+              style="transform: scale(1.25)"
+            >Update</v-btn>
+          </v-row>
+
           <v-alert :type="Alert_type" v-if="Alert">{{ Alert_text }}</v-alert>
         </v-form>
       </v-card>
@@ -54,8 +60,8 @@ var mqtt = require("mqtt"),
 export default {
   name: "ControlLights",
   components: {
-            ColorPicker
-        },
+    ColorPicker
+  },
   data: () => ({
     counter: 0,
     connected: false,
@@ -70,7 +76,8 @@ export default {
     mode: undefined,
     switch1: false,
     ch: 0,
-    color: undefined
+    color: undefined,
+    colorRgb: undefined
   }),
   methods: {
     connect() {
@@ -110,16 +117,26 @@ export default {
     send() {
       this.client.publish("abbexpectmore@gmail.com/light", this.message);
     },
-    uValue() {
-      this.client.publish("abbexpectmore@gmail.com/ctrl", this.value);
-      console.log(this.value);
-    },
     ono() {
       if (this.switch1 == true) {
         this.client.publish("abbexpectmore@gmail.com/light", "on");
       } else {
         this.client.publish("abbexpectmore@gmail.com/light", "off");
       }
+    },
+    hex2rgb(hex) {
+      var h = hex.replace("#", "");
+      h = h.match(new RegExp("(.{" + h.length / 3 + "})", "g"));
+
+      for (var i = 0; i < h.length; i++)
+        h[i] = parseInt(h[i].length == 1 ? h[i] + h[i] : h[i], 16);
+
+      return "(" + h.join(",") + ")";
+    },
+    uValue() {
+      this.value = this.hex2rgb(this.color);
+      this.client.publish("abbexpectmore@gmail.com/ctrl", this.value);
+      console.log(this.value);
     }
   }
 };
