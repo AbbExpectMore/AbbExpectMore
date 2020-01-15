@@ -2,51 +2,23 @@
   <v-row align="start" justify="space-around" no-gutters>
     <v-col cols="auto">
       <!-- <v-flex xs12> -->
-      <v-card dark class="ma-4 grey darken-3">
-        <v-form class="ma-5 pa-4">
+      <v-card v-if="this.$store.state.locked" dark class="ma-4 grey darken-3">
+        <h1>This paged is locked</h1>
+      </v-card>
+
+      <!-- Normal Screen -->
+
+      <v-card v-if="!this.$store.state.locked && !this.$store.state.connected" dark class="ma-4 grey darken-3">
+        <v-form class="ma-4 pa-4">
           <v-text-field dark v-model="user" label="Username" required></v-text-field>
           <v-text-field dark v-model="pass" label="Password" type="password" required></v-text-field>
           <v-row align="start" justify="space-around" no-gutters>
-            <v-btn style="transform: scale(1.25)" dark :disabled="Boolean(connected)" @click="connect()">Connect</v-btn>
+            <v-btn style="transform: scale(1.25)" dark :disabled="this.$store.state.connected" @click="connect()">Connect</v-btn>
           </v-row>
-          <!-- <p class="white--text">{{ mode || 'null' }}</p> -->
-          <v-radio-group dark v-model="mode" :mandatory="false">
-            <v-radio label="On/Off" value="On/Off"></v-radio>
-            <v-radio label="Color Wheel" value="Color Wheel"></v-radio>
-          </v-radio-group>
-          <!-- <v-text-field v-if="mode == 'On/Off'" dark v-model="message" label="Message" required></v-text-field> -->
-          <v-row align="start" justify="space-around" no-gutters>
-            <v-switch
-              :disabled="!Boolean(connected)"
-              color="#f3952d"
-              v-if="mode == 'On/Off'"
-              v-model="switch1"
-              style="transform: scale(2)"
-              @change="ono()"
-            ></v-switch>
-          </v-row>
-
-          <v-row align="start" justify="space-around" no-gutters>
-            <color-picker v-model="color" v-if="mode == 'Color Wheel'"></color-picker>
-          </v-row>
-          <p dark v-if="mode == 'Color Wheel'">
-            Color:
-            <input v-model="color" type="text" />
-          </p>
-
-          <v-row align="start" justify="space-around" no-gutters>
-            <v-btn
-              v-if="mode == 'Color Wheel'"
-              dark
-              :disabled="!Boolean(connected)"
-              @click="uValue()"
-              style="transform: scale(1.25)"
-            >Update</v-btn>
-          </v-row>
-
-          <v-alert :type="Alert_type" v-if="Alert">{{ Alert_text }}</v-alert>
         </v-form>
-        <p>{{crossbow}}</p>
+      </v-card>
+      <v-card v-if="!this.$store.state.locked && this.$store.state.connected" dark class="pa-4 ma-4 grey darken-3">
+        <colorpanel/>
       </v-card>
       <!-- </v-flex> -->
     </v-col>
@@ -55,13 +27,21 @@
 
 <script>
 import ColorPicker from "vue-color-picker-wheel";
+import { mapGetters } from "vuex";
+
 var mqtt = require("mqtt"),
   url = require("url");
 
 export default {
   name: "ControlLights",
   components: {
-    ColorPicker
+    //ColorPicker,
+    colorpanel: () => import("@/components/color_panel.vue")
+  },
+  computed: {
+      ...mapGetters([
+          'locked'
+      ])
   },
   data: () => ({
     counter: 0,
@@ -113,6 +93,8 @@ export default {
           this.Alert = true;
           this.connected = false;
         });
+        console.log('Connected!')
+        this.$store.dispatch('connected')
       this.connected = true;
     },
     send() {
