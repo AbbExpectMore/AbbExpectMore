@@ -1,9 +1,9 @@
 <template>
   <v-row align="start" justify="space-around" no-gutters>
-    <v-col cols="4">
+    <v-col cols="auto">
       <!-- <v-flex xs12> -->
       <v-card dark class="ma-4 grey darken-3">
-        <v-form class="ma-4 pa-3">
+        <v-form class="ma-5 pa-4">
           <v-text-field dark v-model="user" label="Username" required></v-text-field>
           <v-text-field dark v-model="pass" label="Password" type="password" required></v-text-field>
           <v-row align="start" justify="space-around" no-gutters>
@@ -27,7 +27,7 @@
           </v-row>
 
           <v-row align="start" justify="space-around" no-gutters>
-          <color-picker v-model="color" v-if="mode == 'Color Wheel'"></color-picker>
+            <color-picker v-model="color" v-if="mode == 'Color Wheel'"></color-picker>
           </v-row>
           <p dark v-if="mode == 'Color Wheel'">
             Color:
