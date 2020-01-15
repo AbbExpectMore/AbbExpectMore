@@ -46,6 +46,7 @@
 
           <v-alert :type="Alert_type" v-if="Alert">{{ Alert_text }}</v-alert>
         </v-form>
+        <p>{{crossbow}}</p>
       </v-card>
       <!-- </v-flex> -->
     </v-col>
