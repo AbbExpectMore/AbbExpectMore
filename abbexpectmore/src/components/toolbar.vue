@@ -6,7 +6,7 @@
           alt="Vuetify Logo"
           class="shrink mr-2"
           contain
-          src="@/assets/logo.png"
+          src="@/assets/expectrum.png"
           transition="scale-transition"
           width="100"
         />
