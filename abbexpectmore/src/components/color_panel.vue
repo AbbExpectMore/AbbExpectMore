@@ -13,7 +13,6 @@
           <!-- <v-text-field v-if="mode == 'On/Off'" dark v-model="message" label="Message" required></v-text-field> -->
           <v-row align="start" justify="space-around" no-gutters>
             <v-switch
-              :disabled="!this.$store.state.connected"
               color="#f3952d"
               v-if="mode == 'On/Off'"
               v-model="switch1"
@@ -22,8 +21,17 @@
             ></v-switch>
           </v-row>
 
-          <v-row>
-            <v-slider color="#f3952d" style="transform: scale(1.75)" v-if="mode == 'Brightness'"></v-slider>
+          <v-row align="start" justify="space-around" no-gutters>
+              <v-slider vertical color="#f3952d" v-model="bright" v-if="mode == 'Brightness'"></v-slider>
+          </v-row>
+          
+          <v-row align="start" justify="space-around" no-gutters>
+            <!-- <v-btn
+              v-if="mode == 'Brightness'"
+              dark
+              @click="s()"
+              style="transform: scale(1.25)"
+            >Update</v-btn> -->
           </v-row>
 
           <v-row align="start" justify="space-around" no-gutters>
@@ -33,12 +41,10 @@
             Color:
             <input v-model="color" type="text" />
           </p>
-
           <v-row align="start" justify="space-around" no-gutters>
             <v-btn
               v-if="mode == 'Color Wheel'"
               dark
-              :disabled="!this.$store.state.connected"
               @click="uValue()"
               style="transform: scale(1.25)"
             >Update</v-btn>
@@ -57,7 +63,6 @@ import axios from 'axios';
 
 var mqtt = require("mqtt"),
   url = require("url");
-
 export default {
   name: "colorpanel",
   components: {
@@ -70,6 +75,7 @@ export default {
       ])
   },
   data: () => ({
+    bright: undefined,
     counter: 0,
     client: undefined,
     user: "abbexpectmore@gmail.com",
@@ -84,86 +90,54 @@ export default {
     ch: 0,
     color: undefined,
     colorRgb: undefined,
-    on: {
-      method: 'power',
-      value: 'on',
-      pass: 'okokokok'
-    },
-    off: {
-      method: 'power',
-      value: 'off',
+    ah: {
+      method: undefined, //brightness
+      value: undefined,
       pass: 'okokokok'
     }
   }),
   methods: {
     send() {
-      axios
-        .post()
+      this.client.publish("abbexpectmore@gmail.com/light", this.message);
     },
     ono() {
+      this.ah.method = 'power'
       if (this.switch1 == true) {
+        this.ah.value = 'on'
         axios
-          .post('https://4f4owrwgp2.execute-api.us-east-1.amazonaws.com/v1/change', JSON.stringify(this.on))
-          .then(respons => {
-        this.info = respons.data
-        console.log(this.info)
-      })
+        .post('https://4f4owrwgp2.execute-api.us-east-1.amazonaws.com/v1/change', JSON.stringify(this.ah))
+        .then(respons => {
+          this.info = respons.data
+          console.log(this.info)
+        })
       } else {
+        this.ah.value = 'off'
         axios
-          .post('https://4f4owrwgp2.execute-api.us-east-1.amazonaws.com/v1/change', JSON.stringify(this.off))
-          .then(respons => {
-        this.info = respons.data
-        console.log(this.info)
-      })
+        .post('https://4f4owrwgp2.execute-api.us-east-1.amazonaws.com/v1/change', JSON.stringify(this.ah))
+        .then(respons => {
+          this.info = respons.data
+          console.log(this.info)
+        })
       }
     },
     hex2rgb(hex) {
       var h = hex.replace("#", "");
       h = h.match(new RegExp("(.{" + h.length / 3 + "})", "g"));
-
       for (var i = 0; i < h.length; i++)
         h[i] = parseInt(h[i].length == 1 ? h[i] + h[i] : h[i], 16);
-
       return "(" + h.join(",") + ")";
     },
     uValue() {
-      this.value = this.hex2rgb(this.color);
-      this.client.publish("abbexpectmore@gmail.com/ctrl", this.value);
-      console.log(this.value);
-    }
-  },
-  created(){
-    var mqtt_url = "maqiatto.com";
-      var url = "mqtt://" + mqtt_url;
-      var options = {
-        port: 8883,
-        clientId:
-          "mqttjs_" +
-          Math.random()
-            .toString(16)
-            .substr(2, 8),
-        username: this.user,
-        password: this.pass
-      };
-
-      // user = this.options.username
-      // pass = this.options.password
-      console.log("connecting");
-      this.client = mqtt.connect(url, options);
-      console.log("connected?");
-
-      this.client
-        .on("error", function(error) {
-          console.log("no");
-          this.Alert = true;
-          console.log(this.Alert, this.connected);
+      this.value1 = this.hex2rgb(this.color);
+      this.ah.method = 'ctrl'
+      this.ah.value = this.value1
+      axios
+        .post('https://4f4owrwgp2.execute-api.us-east-1.amazonaws.com/v1/change', JSON.stringify(this.ah))
+        .then(respons => {
+          this.info = respons.data
+          console.log(this.info)
         })
-        .on("close", function(error) {
-          console.log("no");
-          this.Alert = true;
-        });
-        console.log('Connected!')
-        this.$store.dispatch('connected')
+    }
   }
 };
 </script>
@@ -174,3 +148,19 @@ export default {
   font-size: 20px;
 }
 </style>
+
+    // on: {
+    //   method: 'power',
+    //   value: 'on',
+    //   pass: 'okokokok'
+    // },
+    // off: {
+    //   method: 'power',
+    //   value: 'off',
+    //   pass: 'okokokok'
+    // },
+    // colorR: {
+    //   method: 'ctrl',
+    //   value: this.colorRgb,
+    //   pass: 'okokokok'
+    // }

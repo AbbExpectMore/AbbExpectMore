@@ -16,7 +16,6 @@
         <v-row align="start" justify="space-around" no-gutters>
         <v-switch @change="lock()" color="#f3952d" v-model="this.$store.state.locked" style="transform: scale(1.25)" label="Admin Controll"></v-switch>
         </v-row>
-        <p>{{this.$store.state.locked}}</p>
         <colorpanel v-if="this.$store.state.locked"/>
         </v-card>
     </v-row>
