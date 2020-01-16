@@ -53,6 +53,7 @@
 <script>
 import ColorPicker from "vue-color-picker-wheel";
 import { mapGetters } from "vuex";
+import axios from 'axios';
 
 var mqtt = require("mqtt"),
   url = require("url");
@@ -82,17 +83,26 @@ export default {
     switch1: false,
     ch: 0,
     color: undefined,
-    colorRgb: undefined
+    colorRgb: undefined,
+    on: {
+
+    },
+    off: {
+      
+    }
   }),
   methods: {
     send() {
-      this.client.publish("abbexpectmore@gmail.com/light", this.message);
+      axios
+        .post()
     },
     ono() {
       if (this.switch1 == true) {
-        this.client.publish("abbexpectmore@gmail.com/light", "on");
+        axios
+          .post()
       } else {
-        this.client.publish("abbexpectmore@gmail.com/light", "off");
+        axios
+          .post()
       }
     },
     hex2rgb(hex) {
@@ -109,6 +119,39 @@ export default {
       this.client.publish("abbexpectmore@gmail.com/ctrl", this.value);
       console.log(this.value);
     }
+  },
+  created(){
+    var mqtt_url = "maqiatto.com";
+      var url = "mqtt://" + mqtt_url;
+      var options = {
+        port: 8883,
+        clientId:
+          "mqttjs_" +
+          Math.random()
+            .toString(16)
+            .substr(2, 8),
+        username: this.user,
+        password: this.pass
+      };
+
+      // user = this.options.username
+      // pass = this.options.password
+      console.log("connecting");
+      this.client = mqtt.connect(url, options);
+      console.log("connected?");
+
+      this.client
+        .on("error", function(error) {
+          console.log("no");
+          this.Alert = true;
+          console.log(this.Alert, this.connected);
+        })
+        .on("close", function(error) {
+          console.log("no");
+          this.Alert = true;
+        });
+        console.log('Connected!')
+        this.$store.dispatch('connected')
   }
 };
 </script>
