@@ -80,11 +80,11 @@ void callback(char *topic, byte *payload, unsigned int length)
 
     change(valR, valG, valB);
   }
-  else if (topic == "/power")
+  else if (topicStr == "/power")
   {
     // TODO
   }
-  else if (topic == "/brightness")
+  else if (topicStr == "/brightness")
   {
     // TODO
   }
