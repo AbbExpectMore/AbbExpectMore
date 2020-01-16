@@ -8,6 +8,7 @@
           <v-radio-group dark v-model="mode" :mandatory="false">
             <v-radio label="On/Off" value="On/Off"></v-radio>
             <v-radio label="Color Wheel" value="Color Wheel"></v-radio>
+            <v-radio label="Brightness" value="Brightness"></v-radio>
           </v-radio-group>
           <!-- <v-text-field v-if="mode == 'On/Off'" dark v-model="message" label="Message" required></v-text-field> -->
           <v-row align="start" justify="space-around" no-gutters>
@@ -19,6 +20,10 @@
               style="transform: scale(2)"
               @change="ono()"
             ></v-switch>
+          </v-row>
+
+          <v-row>
+            <v-slider color="#f3952d" style="transform: scale(1.75)" v-if="mode == 'Brightness'"></v-slider>
           </v-row>
 
           <v-row align="start" justify="space-around" no-gutters>
@@ -65,7 +70,6 @@ export default {
   },
   data: () => ({
     counter: 0,
-    connected: false,
     client: undefined,
     user: "abbexpectmore@gmail.com",
     pass: "ABBExpectMore2020",
