@@ -3,14 +3,14 @@
     <v-toolbar dark>
       <v-toolbar-title>
         <v-img
-          alt="Vuetify Logo"
+          alt="Expectrum Logo"
           class="shrink mr-2"
           contain
           src="@/assets/expectrum.png"
           transition="scale-transition"
           width="100"
         />
-        </v-toolbar-title>
+      </v-toolbar-title>
 
       <v-spacer></v-spacer>
 
