@@ -85,10 +85,14 @@ export default {
     color: undefined,
     colorRgb: undefined,
     on: {
-
+      method: 'power',
+      value: 'on',
+      pass: 'okokokok'
     },
     off: {
-      
+      method: 'power',
+      value: 'off',
+      pass: 'okokokok'
     }
   }),
   methods: {
@@ -99,10 +103,18 @@ export default {
     ono() {
       if (this.switch1 == true) {
         axios
-          .post()
+          .post('https://4f4owrwgp2.execute-api.us-east-1.amazonaws.com/v1/change', JSON.stringify(this.on))
+          .then(respons => {
+        this.info = respons.data
+        console.log(this.info)
+      })
       } else {
         axios
-          .post()
+          .post('https://4f4owrwgp2.execute-api.us-east-1.amazonaws.com/v1/change', JSON.stringify(this.off))
+          .then(respons => {
+        this.info = respons.data
+        console.log(this.info)
+      })
       }
     },
     hex2rgb(hex) {
