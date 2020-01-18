@@ -15,7 +15,6 @@ const store = new Vuex.Store({
     ,
     ad_stat: false,
     locked: false,
-    connected: false,
   },
   getters:{
     saleProducts: state => {
@@ -55,14 +54,6 @@ const store = new Vuex.Store({
         state.locked = true
       }
     },
-    connected: (state) => {
-      console.log('Connected!')
-      state.connected = true
-    },
-    conn_fail: (state) => {
-      console.log('Failed connecting!')
-      state.connected = false
-    }
   },
   //Actions to async
   actions: {
@@ -80,12 +71,6 @@ const store = new Vuex.Store({
     lock: (context) => {
       context.commit('lock')
     },
-    connected: (context) => {
-      context.commit('connected')
-    },
-    conn_fail: (context) => {
-      context.commit('conn_fail')
-    }
   },
   modules: {
   }

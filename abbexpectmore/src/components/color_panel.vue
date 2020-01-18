@@ -13,17 +13,21 @@
           <!-- <v-text-field v-if="mode == 'On/Off'" dark v-model="message" label="Message" required></v-text-field> -->
           <v-row align="start" justify="space-around" no-gutters>
             <v-switch
-              :disabled="!this.$store.state.connected"
               color="#f3952d"
               v-if="mode == 'On/Off'"
               v-model="switch1"
-              style="transform: scale(2)"
+              style="transform: scale(1.75)"
               @change="ono()"
             ></v-switch>
           </v-row>
 
-          <v-row>
-            <v-slider color="#f3952d" style="transform: scale(1.75)" v-if="mode == 'Brightness'"></v-slider>
+          <v-row align="start" justify="space-around" no-gutters v-if="mode == 'Brightness'">
+              <v-slider color="#f3952d" v-model="bright"></v-slider>
+          </v-row>
+          <v-row align="start" justify="space-around" no-gutters v-if="mode == 'Brightness'">
+          <v-btn @click="send()">
+            Update
+          </v-btn>
           </v-row>
 
           <v-row align="start" justify="space-around" no-gutters>
@@ -33,12 +37,10 @@
             Color:
             <input v-model="color" type="text" />
           </p>
-
           <v-row align="start" justify="space-around" no-gutters>
             <v-btn
               v-if="mode == 'Color Wheel'"
               dark
-              :disabled="!this.$store.state.connected"
               @click="uValue()"
               style="transform: scale(1.25)"
             >Update</v-btn>
@@ -53,10 +55,10 @@
 <script>
 import ColorPicker from "vue-color-picker-wheel";
 import { mapGetters } from "vuex";
+import axios from 'axios';
 
 var mqtt = require("mqtt"),
   url = require("url");
-
 export default {
   name: "colorpanel",
   components: {
@@ -69,6 +71,7 @@ export default {
       ])
   },
   data: () => ({
+    bright: undefined,
     counter: 0,
     client: undefined,
     user: "abbexpectmore@gmail.com",
@@ -82,32 +85,63 @@ export default {
     switch1: false,
     ch: 0,
     color: undefined,
-    colorRgb: undefined
+    colorRgb: undefined,
+    ah: {
+      method: undefined, //brightness
+      value: undefined,
+      pass: 'okokokok'
+    }
   }),
   methods: {
     send() {
-      this.client.publish("abbexpectmore@gmail.com/light", this.message);
+      this.ah.method = 'brightness'
+      console.log(this.bright)
+      this.ah.value = this.bright
+      console.log(this.ah.value)
+      axios
+        .post('https://4f4owrwgp2.execute-api.us-east-1.amazonaws.com/v1/change', JSON.stringify(this.ah))
+        .then(respons => {
+          this.info = respons.data
+          console.log(this.info)
+        })
     },
     ono() {
+      this.ah.method = 'power'
       if (this.switch1 == true) {
-        this.client.publish("abbexpectmore@gmail.com/light", "on");
+        this.ah.value = 'on'
+        axios
+        .post('https://4f4owrwgp2.execute-api.us-east-1.amazonaws.com/v1/change', JSON.stringify(this.ah))
+        .then(respons => {
+          this.info = respons.data
+          console.log(this.info)
+        })
       } else {
-        this.client.publish("abbexpectmore@gmail.com/light", "off");
+        this.ah.value = 'off'
+        axios
+        .post('https://4f4owrwgp2.execute-api.us-east-1.amazonaws.com/v1/change', JSON.stringify(this.ah))
+        .then(respons => {
+          this.info = respons.data
+          console.log(this.info)
+        })
       }
     },
     hex2rgb(hex) {
       var h = hex.replace("#", "");
       h = h.match(new RegExp("(.{" + h.length / 3 + "})", "g"));
-
       for (var i = 0; i < h.length; i++)
         h[i] = parseInt(h[i].length == 1 ? h[i] + h[i] : h[i], 16);
-
       return "(" + h.join(",") + ")";
     },
     uValue() {
-      this.value = this.hex2rgb(this.color);
-      this.client.publish("abbexpectmore@gmail.com/ctrl", this.value);
-      console.log(this.value);
+      this.value1 = this.hex2rgb(this.color);
+      this.ah.method = 'ctrl'
+      this.ah.value = this.value1
+      axios
+        .post('https://4f4owrwgp2.execute-api.us-east-1.amazonaws.com/v1/change', JSON.stringify(this.ah))
+        .then(respons => {
+          this.info = respons.data
+          console.log(this.info)
+        })
     }
   }
 };
@@ -119,3 +153,19 @@ export default {
   font-size: 20px;
 }
 </style>
+
+    // on: {
+    //   method: 'power',
+    //   value: 'on',
+    //   pass: 'okokokok'
+    // },
+    // off: {
+    //   method: 'power',
+    //   value: 'off',
+    //   pass: 'okokokok'
+    // },
+    // colorR: {
+    //   method: 'ctrl',
+    //   value: this.colorRgb,
+    //   pass: 'okokokok'
+    // }
