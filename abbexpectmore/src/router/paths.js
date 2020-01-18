@@ -16,10 +16,10 @@ export default [{
     view: 'Admin',
     //   component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
   },
-  {
-    path: '/Help',
-    name: 'Help',
-    view: 'Help',
-    //   component: () => import(/* webpackChunkName: "about" */ '../views/GetAnswer.vue')
-  }
+  // {
+  //   path: '/Help',
+  //   name: 'Help',
+  //   view: 'Help',
+  //   //   component: () => import(/* webpackChunkName: "about" */ '../views/GetAnswer.vue')
+  // }
 ];

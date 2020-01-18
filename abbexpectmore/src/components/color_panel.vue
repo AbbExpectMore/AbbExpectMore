@@ -16,22 +16,18 @@
               color="#f3952d"
               v-if="mode == 'On/Off'"
               v-model="switch1"
-              style="transform: scale(2)"
+              style="transform: scale(1.75)"
               @change="ono()"
             ></v-switch>
           </v-row>
 
-          <v-row align="start" justify="space-around" no-gutters>
-              <v-slider vertical color="#f3952d" v-model="bright" v-if="mode == 'Brightness'"></v-slider>
+          <v-row align="start" justify="space-around" no-gutters v-if="mode == 'Brightness'">
+              <v-slider color="#f3952d" v-model="bright"></v-slider>
           </v-row>
-          
-          <v-row align="start" justify="space-around" no-gutters>
-            <!-- <v-btn
-              v-if="mode == 'Brightness'"
-              dark
-              @click="s()"
-              style="transform: scale(1.25)"
-            >Update</v-btn> -->
+          <v-row align="start" justify="space-around" no-gutters v-if="mode == 'Brightness'">
+          <v-btn @click="send()">
+            Update
+          </v-btn>
           </v-row>
 
           <v-row align="start" justify="space-around" no-gutters>
@@ -98,7 +94,16 @@ export default {
   }),
   methods: {
     send() {
-      this.client.publish("abbexpectmore@gmail.com/light", this.message);
+      this.ah.method = 'brightness'
+      console.log(this.bright)
+      this.ah.value = this.bright
+      console.log(this.ah.value)
+      axios
+        .post('https://4f4owrwgp2.execute-api.us-east-1.amazonaws.com/v1/change', JSON.stringify(this.ah))
+        .then(respons => {
+          this.info = respons.data
+          console.log(this.info)
+        })
     },
     ono() {
       this.ah.method = 'power'

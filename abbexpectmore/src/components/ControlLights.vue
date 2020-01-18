@@ -2,10 +2,6 @@
   <v-row align="start" justify="space-around" no-gutters>
     <v-col cols="auto">
 
-      <!-- Axios example -->
-      <!-- <v-card dark class="ma-4 grey darken-3">
-        <p class="white--text">{{this.info}}</p>
-      </v-card> -->
 
       <!-- Page locked -->
       <v-card v-if="this.$store.state.locked" dark class="ma-4 grey darken-3">
@@ -42,13 +38,6 @@ export default {
   },
   data: () => ({
     counter: 0,
-    client: undefined,
-    user: "abbexpectmore@gmail.com",
-    pass: "ABBExpectMore2020",
-    message: "",
-    Alert: false,
-    Alert_type: "warning",
-    Alert_text: "Could not connect to broker :((",
     value: undefined,
     mode: undefined,
     switch1: false,
@@ -63,39 +52,7 @@ export default {
     }
   }),
   methods: {
-    connect() {
-      var mqtt_url = "maqiatto.com";
-      var url = "mqtt://" + mqtt_url;
-      var options = {
-        port: 8883,
-        clientId:
-          "mqttjs_" +
-          Math.random()
-            .toString(16)
-            .substr(2, 8),
-        username: this.user,
-        password: this.pass
-      };
-
-      // user = this.options.username
-      // pass = this.options.password
-      console.log("connecting");
-      this.client = mqtt.connect(url, options);
-      console.log("connected?");
-
-      this.client
-        .on("error", function(error) {
-          console.log("no");
-          this.Alert = true;
-          console.log(this.Alert, this.connected);
-        })
-        .on("close", function(error) {
-          console.log("no");
-          this.Alert = true;
-        });
-        console.log('Connected!')
-        this.$store.dispatch('connected')
-    }
+   
   },
   created(){
   }
