@@ -29,8 +29,10 @@
             Update
           </v-btn>
           </v-row>
-
-          <v-row align="start" justify="space-around" no-gutters>
+          <v-row v-if="mode == 'Color Wheel'" align="start" justify="space-around" no-gutters>
+            <ColorPicker />
+          </v-row>
+          <!-- <v-row align="start" justify="space-around" no-gutters>
             <color-picker v-model="color" v-if="mode == 'Color Wheel'"></color-picker>
           </v-row>
           <p dark v-if="mode == 'Color Wheel'">
@@ -44,7 +46,7 @@
               @click="uValue()"
               style="transform: scale(1.25)"
             >Update</v-btn>
-          </v-row>
+          </v-row> -->
 
           <v-alert :type="Alert_type" v-if="Alert">{{ Alert_text }}</v-alert>
       <!-- </v-flex> -->
@@ -53,16 +55,18 @@
 </template>
 
 <script>
-import ColorPicker from "vue-color-picker-wheel";
+// import ColorPicker from "vue-color-picker-wheel";
 import { mapGetters } from "vuex";
 import axios from 'axios';
+import iro from '@jaames/iro'
+import ColorPicker from '@/components/ColorPicker.vue'
 
 var mqtt = require("mqtt"),
   url = require("url");
 export default {
   name: "colorpanel",
   components: {
-    ColorPicker
+    ColorPicker,
   },
   computed: {
       ...mapGetters([

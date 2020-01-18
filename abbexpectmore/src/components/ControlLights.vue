@@ -4,9 +4,16 @@
 
 
       <!-- Page locked -->
-      <v-card v-if="this.$store.state.locked" dark class="ma-4 grey darken-3">
-        <h1>This paged is locked</h1>
+      <v-card v-if="this.$store.state.locked" dark class="ma-4 grey darken-3 px-2">
+      <v-tooltip bottom>
+        <template v-slot:activator="{ on }">
+          
+          <h1 v-on="on">This page is locked</h1>
+        </template>
+        <span>To unlock disable "Admin Control" under Admin (must be signed in)</span>
+      </v-tooltip>
       </v-card>
+
 
       <!-- Normal Screen (C<onnected)-->
       <v-card v-if="!this.$store.state.locked" dark class="pa-4 ma-4 grey darken-3">

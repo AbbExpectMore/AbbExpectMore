@@ -3,6 +3,7 @@
     <v-toolbar dark>
       <v-toolbar-title>
         <v-img
+          href="/home"
           alt="Expectrum Logo"
           class="shrink mr-2"
           contain
@@ -14,9 +15,21 @@
 
       <v-spacer></v-spacer>
 
+
       <v-toolbar-items>
-        <v-btn to="/home">Home</v-btn>
-        <v-btn to="/about">About</v-btn>
+        <v-btn to="/home">
+          <v-icon v-if="!this.$store.state.locked">
+            mdi-lightbulb-outline
+          </v-icon>
+          <v-icon v-if="this.$store.state.locked">
+            mdi-lightbulb-off-outline
+          </v-icon>
+        </v-btn>
+        <v-btn to="/about">
+        <v-icon>
+          mdi-information-outline
+        </v-icon>
+        </v-btn>
         <v-btn v-if="this.$store.state.ad_stat" to="/admin">Admin</v-btn>
       </v-toolbar-items>
 
@@ -54,7 +67,10 @@ export default {
   components: {},
   data: () => ({}),
   computed: {
-    ...mapGetters(["ad_stat"]),
+    ...mapGetters([
+      "ad_stat",
+      "locked"
+      ]),
     links() {
       return paths;
     }
