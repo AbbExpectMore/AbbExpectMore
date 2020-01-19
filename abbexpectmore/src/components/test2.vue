@@ -7,7 +7,6 @@
         <v-text-field dark v-model="pass" label="Password" type="password" required></v-text-field>
         <v-row align="start" no-gutters>
           <v-btn v-if="!this.$store.state.ad_stat" @click="cred_check(user+pass)">Sign in</v-btn>
-          <!-- <v-btn>{{this.$store.state.ad_stat}}</v-btn> -->
         </v-row>
       </v-form>
       </v-card>

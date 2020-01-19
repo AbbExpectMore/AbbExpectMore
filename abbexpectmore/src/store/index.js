@@ -1,30 +1,32 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import axios from 'axios'
 
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
   state: {
-    products: [
-      {name:'Bone Boi', price: 30},
-      {name:'Bone', price: 290},
-      {name:'Bo', price: 20}
-    ],
-    creds: 
-      {user: 'a',pass: 'b'}
+    creds:
+      { user: 'a', pass: 'b' }
     ,
     ad_stat: false,
     locked: false,
+    sends: {
+      method: 'ctrl',
+      value: '',
+      pass: 'okokokok'
+    },
+    info: undefined
   },
-  getters:{
+  getters: {
     saleProducts: state => {
       var saleProducts = state.products.map(product => {
         return {
-            name: product.name,
-            price: product.price/2
+          name: product.name,
+          price: product.price / 2
         }
-    })
-    return saleProducts
+      })
+      return saleProducts
     },
     ad_stat: state => {
       var status = state.ad_stat
@@ -32,48 +34,48 @@ const store = new Vuex.Store({
     }
   },
   mutations: {
-    reducePrice: (state, payload) => {
-      state.products.forEach(product => {
-      product.price -= payload
-   });         
-    },
     cred_check: (state, payload) => {
-      if (payload == state.creds.user+state.creds.pass){
+      if (payload == state.creds.user + state.creds.pass) {
         state.ad_stat = true
       }
+    },
+    postRGB: (state) => {
+      axios
+        .post('https://4f4owrwgp2.execute-api.us-east-1.amazonaws.com/v1/change', JSON.stringify(state.sends))
+        .then(respons => {
+          state.info = respons.data
+          console.log(state.info)
+        })
     },
     log_out: (state) => {
       state.ad_stat = false
     },
     lock: (state) => {
-      if (state.locked){
+      if (state.locked) {
         console.log('unlocked')
         state.locked = false
-      }else{
+      } else {
         console.log('locked')
         state.locked = true
       }
     },
   },
-  //Actions to async
-  actions: {
-    reducePrice: (context, payload) => {
-      setTimeout(function(){
-        context.commit('reducePrice', payload)
-      },2000)
-    },
-    cred_check: (context, payload) => {
-      context.commit('cred_check', payload)
-    },
-    log_out: (context) => {
-      context.commit('log_out')
-    },
-    lock: (context) => {
-      context.commit('lock')
-    },
-  },
-  modules: {
-  }
-})
+    //Actions to async
+    actions: {
+      cred_check: (context, payload) => {
+        context.commit('cred_check', payload)
+      },
+      log_out: (context) => {
+        console.log('1')
+        context.commit('postRGB')
+      },
+      postRGB: (context) => {
+        context.commit('postRGB')
+      },
+      lock: (context) => {
+        context.commit('lock')
+      },
+    }
+  })
 
 export default store

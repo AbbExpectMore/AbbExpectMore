@@ -1,8 +1,6 @@
 <template>
   <v-row align="start" justify="space-around" no-gutters>
     <v-col cols="auto">
-      <!-- <v-flex xs12> -->
-
       <!-- Normal Screen -->
 
           <v-radio-group dark v-model="mode" :mandatory="false">
@@ -10,7 +8,6 @@
             <v-radio label="Color Wheel" value="Color Wheel"></v-radio>
             <v-radio label="Brightness" value="Brightness"></v-radio>
           </v-radio-group>
-          <!-- <v-text-field v-if="mode == 'On/Off'" dark v-model="message" label="Message" required></v-text-field> -->
           <v-row align="start" justify="space-around" no-gutters>
             <v-switch
               color="#f3952d"
@@ -32,22 +29,6 @@
           <v-row v-if="mode == 'Color Wheel'" align="start" justify="space-around" no-gutters>
             <ColorPicker />
           </v-row>
-          <!-- <v-row align="start" justify="space-around" no-gutters>
-            <color-picker v-model="color" v-if="mode == 'Color Wheel'"></color-picker>
-          </v-row>
-          <p dark v-if="mode == 'Color Wheel'">
-            Color:
-            <input v-model="color" type="text" />
-          </p>
-          <v-row align="start" justify="space-around" no-gutters>
-            <v-btn
-              v-if="mode == 'Color Wheel'"
-              dark
-              @click="uValue()"
-              style="transform: scale(1.25)"
-            >Update</v-btn>
-          </v-row> -->
-
           <v-alert :type="Alert_type" v-if="Alert">{{ Alert_text }}</v-alert>
       <!-- </v-flex> -->
     </v-col>
@@ -58,7 +39,6 @@
 // import ColorPicker from "vue-color-picker-wheel";
 import { mapGetters } from "vuex";
 import axios from 'axios';
-import iro from '@jaames/iro'
 import ColorPicker from '@/components/ColorPicker.vue'
 
 var mqtt = require("mqtt"),
@@ -99,9 +79,7 @@ export default {
   methods: {
     send() {
       this.ah.method = 'brightness'
-      console.log(this.bright)
       this.ah.value = this.bright
-      console.log(this.ah.value)
       axios
         .post('https://4f4owrwgp2.execute-api.us-east-1.amazonaws.com/v1/change', JSON.stringify(this.ah))
         .then(respons => {
@@ -128,24 +106,6 @@ export default {
           console.log(this.info)
         })
       }
-    },
-    hex2rgb(hex) {
-      var h = hex.replace("#", "");
-      h = h.match(new RegExp("(.{" + h.length / 3 + "})", "g"));
-      for (var i = 0; i < h.length; i++)
-        h[i] = parseInt(h[i].length == 1 ? h[i] + h[i] : h[i], 16);
-      return "(" + h.join(",") + ")";
-    },
-    uValue() {
-      this.value1 = this.hex2rgb(this.color);
-      this.ah.method = 'ctrl'
-      this.ah.value = this.value1
-      axios
-        .post('https://4f4owrwgp2.execute-api.us-east-1.amazonaws.com/v1/change', JSON.stringify(this.ah))
-        .then(respons => {
-          this.info = respons.data
-          console.log(this.info)
-        })
     }
   }
 };

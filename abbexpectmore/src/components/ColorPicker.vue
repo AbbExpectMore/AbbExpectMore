@@ -1,18 +1,26 @@
 <template>
   <div>
     <!-- <span class="white--text">{{color}}</span> -->
-    <color-picker transparent v-bind="color" @input="onInput" ></color-picker>
-    <v-btn class="white--text" @click="yes()">{{rgb}}</v-btn>
-    <span class="white--text">{{this.color.hue}}</span>
+    <color-picker variant="persistent" v-bind="color" @input="onInput" ></color-picker>
+    <v-row align="start" justify="space-around">
+      <v-btn dark style="transform: scale(1.25)" class="mt-4" @click="yes()">Update</v-btn>
+    </v-row>
   </div>
 </template>
 
 <script>
-import ColorPicker from '@radial-color-picker/vue-color-picker' 
+import ColorPicker from '@radial-color-picker/vue-color-picker'
+import { mapGetters } from "vuex";
+import { mapActions } from 'vuex';
 
 export default {
   components: {
     ColorPicker
+  },
+  computed: {
+    ...mapGetters([
+      'sends'
+    ])
   },
   data: () => ({
     color: { 
@@ -21,14 +29,20 @@ export default {
       luminosity: 50,
       alpha: 1
     },
-    rgb: undefined
+    rgb: undefined,
   }),
   methods: {
+    ...mapActions([
+      'postRGB',
+      'log_out'
+    ]),
     onInput(hue){
       this.color.hue = hue;
     },
     yes(){
       this.rgb = this.HSLToRGB(this.color.hue, this.color.saturation, this.color.luminosity)
+      this.$store.state.sends.value = this.rgb
+      this.$store.dispatch('postRGB')
     },
     HSLToRGB(h,s,l) {
   // Must be fractions of 1
@@ -59,7 +73,7 @@ export default {
   g = Math.round((g + m) * 255);
   b = Math.round((b + m) * 255);
 
-  return "rgb(" + r + "," + g + "," + b + ")";
+  return "(" + r + "," + g + "," + b + ")";
 }
 
 

@@ -2,10 +2,22 @@
   <v-app>
     <toolbar />
     <v-content class="grey darken-4">
+
+      <v-row align="start" justify="space-around" no-gutters>
+
+        <!-- for visual lamp/render a mirror -->
+      <!-- <v-card dark class="grey darken-3 ma-4">
+        <v-icon size="100">
+          mdi-lightbulb-outline
+        </v-icon>
+      </v-card> -->
+
+      <!-- Actual app, all views and content -->
       <v-fade-transition mode="out-in">
-        <!-- <v-btn v-if="!mode" @click="connect()"></v-btn> -->
         <router-view/>
       </v-fade-transition>
+      </v-row>
+
     </v-content>
   </v-app>
 </template>
