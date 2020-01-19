@@ -12,7 +12,7 @@
       </v-card>
       <v-card v-if="this.$store.state.ad_stat" class="ma-7 py-2 px-10" dark>
         <v-row  align="start" justify="space-around" no-gutters>
-        <v-switch @change="lock()" color="#f3952d" v-model="this.$store.state.locked" style="transform: scale(1.25)" label="Admin Controll"></v-switch>
+        <v-switch @change="lockIt()" color="#f3952d" v-model="switch_admin" style="transform: scale(1.25)" label="Admin Controll"></v-switch>
         </v-row>
         <colorpanel v-if="this.$store.state.locked"/>
         </v-card>
@@ -48,7 +48,14 @@ export default {
           this.user = undefined
           this.pass = undefined
           this.$store.dispatch('log_out')
+      },
+      lockIt(){
+        this.switch_admin = this.$store.state.locked
+        this.$store.dispatch('lock')
       }
+  },
+  mounted(){
+    this.switch_admin = this.$store.state.locked
   }
 };
 </script>

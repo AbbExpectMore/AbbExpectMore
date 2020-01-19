@@ -16,7 +16,8 @@ const store = new Vuex.Store({
       value: '',
       pass: 'okokokok'
     },
-    info: undefined
+    info: undefined,
+    onOff: false,
   },
   getters: {
     saleProducts: state => {
@@ -52,10 +53,10 @@ const store = new Vuex.Store({
     },
     lock: (state) => {
       if (state.locked) {
-        console.log('unlocked')
+        // console.log('unlocked')
         state.locked = false
       } else {
-        console.log('locked')
+        // console.log('locked')
         state.locked = true
       }
     },
@@ -66,7 +67,6 @@ const store = new Vuex.Store({
         context.commit('cred_check', payload)
       },
       log_out: (context) => {
-        console.log('1')
         context.commit('postRGB')
       },
       postRGB: (context) => {

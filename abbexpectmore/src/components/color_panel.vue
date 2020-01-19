@@ -51,7 +51,8 @@ export default {
   computed: {
       ...mapGetters([
           'locked',
-          'connected'
+          'connected',
+          'onOff'
       ])
   },
   data: () => ({
@@ -89,6 +90,7 @@ export default {
     },
     ono() {
       this.ah.method = 'power'
+      this.$store.state.onOff = this.switch1
       if (this.switch1 == true) {
         this.ah.value = 'on'
         axios
@@ -107,6 +109,9 @@ export default {
         })
       }
     }
+  },
+  mounted(){
+    this.switch1 = this.$store.state.onOff
   }
 };
 </script>
