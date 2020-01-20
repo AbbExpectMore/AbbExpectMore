@@ -40,6 +40,7 @@
 import { mapGetters } from "vuex";
 import axios from 'axios';
 import ColorPicker from '@/components/ColorPicker.vue'
+import { stringify } from 'querystring';
 
 var mqtt = require("mqtt"),
   url = require("url");
@@ -80,7 +81,7 @@ export default {
   methods: {
     send() {
       this.ah.method = 'brightness'
-      this.ah.value = this.bright
+      this.ah.value = String(this.bright)
       axios
         .post('https://4f4owrwgp2.execute-api.us-east-1.amazonaws.com/v1/change', JSON.stringify(this.ah))
         .then(respons => {
