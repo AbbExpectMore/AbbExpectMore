@@ -38,6 +38,7 @@
 <script>
 // import ColorPicker from "vue-color-picker-wheel";
 import { mapGetters } from "vuex";
+import { mapActions } from "vuex";
 import axios from 'axios';
 import ColorPicker from '@/components/ColorPicker.vue'
 import { stringify } from 'querystring';
@@ -53,7 +54,8 @@ export default {
       ...mapGetters([
           'locked',
           'connected',
-          'onOff'
+          'onOff',
+          'sends'
       ])
   },
   data: () => ({
@@ -78,35 +80,23 @@ export default {
     }
   }),
   methods: {
+    ...mapActions([
+      'postRGB'
+    ]),
     send() {
-      this.ah.method = 'brightness'
-      this.ah.value = String(this.bright)
-      axios
-        .post('https://4f4owrwgp2.execute-api.us-east-1.amazonaws.com/v1/change', JSON.stringify(this.ah))
-        .then(respons => {
-          this.info = respons.data
-          // console.log(this.info)
-        })
+      this.$store.state.sends.method = 'brightness'
+      this.$store.state.sends.value = String(this.bright)
+      this.$store.dispatch('postRGB')
     },
     ono() {
-      this.ah.method = 'power'
+      this.$store.state.sends.method = 'power'
       this.$store.state.onOff = this.switch1
       if (this.switch1 == true) {
-        this.ah.value = 'on'
-        axios
-        .post('https://4f4owrwgp2.execute-api.us-east-1.amazonaws.com/v1/change', JSON.stringify(this.ah))
-        .then(respons => {
-          this.info = respons.data
-          // console.log(this.info)
-        })
+        this.$store.state.sends.value = 'on'
+        this.$store.dispatch('postRGB')
       } else {
-        this.ah.value = 'off'
-        axios
-        .post('https://4f4owrwgp2.execute-api.us-east-1.amazonaws.com/v1/change', JSON.stringify(this.ah))
-        .then(respons => {
-          this.info = respons.data
-          // console.log(this.info)
-        })
+        this.$store.state.sends.value = 'off'
+        this.$store.dispatch('postRGB')
       }
     }
   },

@@ -15,7 +15,7 @@ const store = new Vuex.Store({
     sends: {
       method: 'ctrl',
       value: '',
-      pass: 'okokokok'
+      id: ''
     },
     info: undefined,
     onOff: false,
@@ -23,7 +23,8 @@ const store = new Vuex.Store({
       id: undefined,
       action: 'lock',
       value: undefined
-    }
+    },
+    rgb: 'rgb(50,100,100)'
   },
   getters: {
     saleProducts: state => {
@@ -54,6 +55,15 @@ const store = new Vuex.Store({
         })
       },
     postRGB: (state) => {
+      state.rgb = 'rgb' + String(state.sends.value)
+      // console.log(state.sends)
+      if (state.ad_stat == true){
+        state.sends.id = state.lk.id
+      }
+      else{
+        state.sends.id = ""
+        state.lk.id = ""
+      }
       axios
         .post('https://4f4owrwgp2.execute-api.us-east-1.amazonaws.com/v1/change', JSON.stringify(state.sends))
         .then(respons => {
@@ -71,7 +81,7 @@ const store = new Vuex.Store({
           .post('https://4f4owrwgp2.execute-api.us-east-1.amazonaws.com/v1', JSON.stringify(state.lk) )
           .then(respons => {
             state.info = respons.data
-            console.log(state.info)
+            // console.log(state.info)
           })
         state.locked = false
       } else {
@@ -81,7 +91,7 @@ const store = new Vuex.Store({
           .post('https://4f4owrwgp2.execute-api.us-east-1.amazonaws.com/v1', JSON.stringify(state.lk) )
           .then(respons => {
             state.info = respons.data
-            console.log(state.info)
+            // console.log(state.info)
           })
         state.locked = true
       }

@@ -42,6 +42,7 @@ export default {
     yes(){
       this.rgb = this.HSLToRGB(this.color.hue, this.color.saturation, this.color.luminosity)
       this.$store.state.sends.value = this.rgb
+      this.$store.state.sends.method = 'ctrl'
       this.$store.dispatch('postRGB')
     },
     HSLToRGB(h,s,l) {

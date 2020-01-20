@@ -48,7 +48,7 @@ export default {
       .get('https://4f4owrwgp2.execute-api.us-east-1.amazonaws.com/v1/')
       .then(respons => {
         var info = respons.data
-        console.log(info)
+        // console.log(info)
         this.$store.state.locked = info.locked
       })
   },
