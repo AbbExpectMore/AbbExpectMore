@@ -65,7 +65,9 @@ import { mapActions } from "vuex";
 
 export default {
   components: {},
-  data: () => ({}),
+  data: () => ({
+    
+  }),
   computed: {
     ...mapGetters([
       "ad_stat",

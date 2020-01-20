@@ -13,6 +13,7 @@
     "axios": "^0.19.0",
     "core-js": "^3.3.2",
     "mqtt": "^3.0.0",
+    "sha256": "^0.2.0",
     "vue": "^2.6.10",
     "vue-color-picker-wheel": "^0.4.3",
     "vue-iro-color-picker": "^2.0.0",

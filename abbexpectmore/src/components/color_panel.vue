@@ -67,15 +67,14 @@ export default {
     Alert_type: "warning",
     Alert_text: "Could not connect to broker :((",
     value: undefined,
-    mode: undefined,
+    mode: 'Color Wheel',
     switch1: false,
     ch: 0,
     color: undefined,
     colorRgb: undefined,
     ah: {
       method: undefined, //brightness
-      value: undefined,
-      pass: 'okokokok'
+      value: undefined
     }
   }),
   methods: {
@@ -86,7 +85,7 @@ export default {
         .post('https://4f4owrwgp2.execute-api.us-east-1.amazonaws.com/v1/change', JSON.stringify(this.ah))
         .then(respons => {
           this.info = respons.data
-          console.log(this.info)
+          // console.log(this.info)
         })
     },
     ono() {
@@ -98,7 +97,7 @@ export default {
         .post('https://4f4owrwgp2.execute-api.us-east-1.amazonaws.com/v1/change', JSON.stringify(this.ah))
         .then(respons => {
           this.info = respons.data
-          console.log(this.info)
+          // console.log(this.info)
         })
       } else {
         this.ah.value = 'off'
@@ -106,7 +105,7 @@ export default {
         .post('https://4f4owrwgp2.execute-api.us-east-1.amazonaws.com/v1/change', JSON.stringify(this.ah))
         .then(respons => {
           this.info = respons.data
-          console.log(this.info)
+          // console.log(this.info)
         })
       }
     }

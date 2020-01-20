@@ -23,6 +23,9 @@
 </template>
 
 <script>
+import axios from 'axios'
+import { mapGetters } from 'vuex'
+
 export default {
   components: {
     toolbar: () => import("./components/toolbar.vue"),
@@ -35,8 +38,19 @@ export default {
       alpha: 1
     },
   }),
-  mounted(){
-    console.log('mounting')
+  computed: {
+    ...mapGetters([
+      'locked'
+    ])
+  },
+  created(){
+    axios
+      .get('https://4f4owrwgp2.execute-api.us-east-1.amazonaws.com/v1/')
+      .then(respons => {
+        var info = respons.data
+        console.log(info)
+        this.$store.state.locked = info.locked
+      })
   },
   methods: {
   }

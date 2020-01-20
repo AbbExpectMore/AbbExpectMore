@@ -6,9 +6,10 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
   state: {
-    creds:
-      { user: 'a', pass: 'b' }
-    ,
+    cred:{
+      user: undefined,
+      pass: undefined
+    },
     ad_stat: false,
     locked: false,
     sends: {
@@ -18,6 +19,11 @@ const store = new Vuex.Store({
     },
     info: undefined,
     onOff: false,
+    lk: {
+      id: undefined,
+      action: 'lock',
+      value: undefined
+    }
   },
   getters: {
     saleProducts: state => {
@@ -36,16 +42,23 @@ const store = new Vuex.Store({
   },
   mutations: {
     cred_check: (state, payload) => {
-      if (payload == state.creds.user + state.creds.pass) {
-        state.ad_stat = true
-      }
-    },
+      axios
+        .put('https://ec4avk1xoh.execute-api.us-east-1.amazonaws.com/v1/', payload)
+        .then(respons => {
+          state.info = respons.data
+          // console.log(state.info.success)
+          if (state.info.success){
+            state.ad_stat = true
+            state.lk.id = state.info.id
+          }
+        })
+      },
     postRGB: (state) => {
       axios
         .post('https://4f4owrwgp2.execute-api.us-east-1.amazonaws.com/v1/change', JSON.stringify(state.sends))
         .then(respons => {
           state.info = respons.data
-          console.log(state.info)
+          // console.log(state.info)
         })
     },
     log_out: (state) => {
@@ -53,10 +66,23 @@ const store = new Vuex.Store({
     },
     lock: (state) => {
       if (state.locked) {
-        // console.log('unlocked')
+        state.lk.value = false
+        axios
+          .post('https://4f4owrwgp2.execute-api.us-east-1.amazonaws.com/v1', JSON.stringify(state.lk) )
+          .then(respons => {
+            state.info = respons.data
+            console.log(state.info)
+          })
         state.locked = false
       } else {
         // console.log('locked')
+        state.lk.value = true
+        axios
+          .post('https://4f4owrwgp2.execute-api.us-east-1.amazonaws.com/v1', JSON.stringify(state.lk) )
+          .then(respons => {
+            state.info = respons.data
+            console.log(state.info)
+          })
         state.locked = true
       }
     },
@@ -67,7 +93,7 @@ const store = new Vuex.Store({
         context.commit('cred_check', payload)
       },
       log_out: (context) => {
-        context.commit('postRGB')
+        context.commit('log_out')
       },
       postRGB: (context) => {
         context.commit('postRGB')
