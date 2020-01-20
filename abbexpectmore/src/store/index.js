@@ -6,9 +6,9 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
   state: {
-    cred:{
-      user: undefined,
-      pass: undefined
+    creds: {
+      user: "",
+      pass: ""
     },
     ad_stat: false,
     locked: false,
@@ -24,7 +24,9 @@ const store = new Vuex.Store({
       action: 'lock',
       value: undefined
     },
-    rgb: 'rgb(50,100,100)'
+    rgb: 'rgb(50,100,100)',
+    loading: false,
+    tried_once: false
   },
   getters: {
     saleProducts: state => {
@@ -48,19 +50,20 @@ const store = new Vuex.Store({
         .then(respons => {
           state.info = respons.data
           // console.log(state.info.success)
-          if (state.info.success){
+          state.loading = false
+          state.tried_once = true
+          if (state.info.success) {
             state.ad_stat = true
             state.lk.id = state.info.id
           }
         })
-      },
+    },
     postRGB: (state) => {
       state.rgb = 'rgb' + String(state.sends.value)
       // console.log(state.sends)
-      if (state.ad_stat == true){
+      if (state.ad_stat == true) {
         state.sends.id = state.lk.id
-      }
-      else{
+      } else {
         state.sends.id = ""
         state.lk.id = ""
       }
@@ -73,12 +76,17 @@ const store = new Vuex.Store({
     },
     log_out: (state) => {
       state.ad_stat = false
+      state.creds = {
+        user: undefined,
+        pass: undefined
+      }
+      state.tried_once = false
     },
     lock: (state) => {
       if (state.locked) {
         state.lk.value = false
         axios
-          .post('https://4f4owrwgp2.execute-api.us-east-1.amazonaws.com/v1', JSON.stringify(state.lk) )
+          .post('https://4f4owrwgp2.execute-api.us-east-1.amazonaws.com/v1', JSON.stringify(state.lk))
           .then(respons => {
             state.info = respons.data
             // console.log(state.info)
@@ -88,7 +96,7 @@ const store = new Vuex.Store({
         // console.log('locked')
         state.lk.value = true
         axios
-          .post('https://4f4owrwgp2.execute-api.us-east-1.amazonaws.com/v1', JSON.stringify(state.lk) )
+          .post('https://4f4owrwgp2.execute-api.us-east-1.amazonaws.com/v1', JSON.stringify(state.lk))
           .then(respons => {
             state.info = respons.data
             // console.log(state.info)
@@ -97,21 +105,21 @@ const store = new Vuex.Store({
       }
     },
   },
-    //Actions to async
-    actions: {
-      cred_check: (context, payload) => {
-        context.commit('cred_check', payload)
-      },
-      log_out: (context) => {
-        context.commit('log_out')
-      },
-      postRGB: (context) => {
-        context.commit('postRGB')
-      },
-      lock: (context) => {
-        context.commit('lock')
-      },
-    }
-  })
+  //Actions to async
+  actions: {
+    cred_check: (context, payload) => {
+      context.commit('cred_check', payload)
+    },
+    log_out: (context) => {
+      context.commit('log_out')
+    },
+    postRGB: (context) => {
+      context.commit('postRGB')
+    },
+    lock: (context) => {
+      context.commit('lock')
+    },
+  }
+})
 
 export default store
