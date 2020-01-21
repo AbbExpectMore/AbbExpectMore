@@ -35,7 +35,7 @@
 
       <v-tooltip bottom v-if="!this.$store.state.ad_stat">
         <template v-slot:activator="{ on }">
-          <v-btn to="/admin" class="ml-5" fab small :color="$store.state.rgb" @click="loggo()" dark v-on="on">
+          <v-btn to="/admin" class="ml-5" fab small color="#f3952d" @click="loggo()" dark v-on="on">
             <v-icon>
               mdi-account
             </v-icon>
@@ -46,7 +46,7 @@
 
       <v-tooltip bottom v-if="this.$store.state.ad_stat">
         <template v-slot:activator="{ on }">
-          <v-btn to="/admin" class="ml-5" fab small :color="$store.state.rgb" @click="loggo()" dark v-on="on">
+          <v-btn to="/admin" class="ml-5" fab small color="#f3952d" @click="loggo()" dark v-on="on">
             <v-icon>
               mdi-account-arrow-left
             </v-icon>

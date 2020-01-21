@@ -59,7 +59,7 @@ const store = new Vuex.Store({
         })
     },
     postRGB: (state) => {
-      state.rgb = 'rgb' + String(state.sends.value)
+      // state.rgb = 'rgb' + String(state.sends.value)
       // console.log(state.sends)
       if (state.ad_stat == true) {
         state.sends.id = state.lk.id
