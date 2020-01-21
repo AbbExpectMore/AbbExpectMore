@@ -1,5 +1,5 @@
 <template>
-  <v-row align="start" justify="space-around" no-gutters>
+  <v-row  align="start" justify="space-around" no-gutters>
     <v-col cols="auto">
 
 
@@ -16,7 +16,7 @@
 
 
       <!-- Normal Screen (C<onnected)-->
-      <v-card v-if="!this.$store.state.locked" dark class="pa-4 ma-4 grey darken-3">
+      <v-card min-width="337" v-if="!this.$store.state.locked" dark class="pa-4 ma-4 grey darken-3">
         <colorpanel/>
       </v-card>
 

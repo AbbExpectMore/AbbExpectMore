@@ -1,5 +1,5 @@
 <template>
-  <v-row align="start" justify="space-around" no-gutters>
+  <!-- <v-row align="start" justify="space-around" no-gutters> -->
     <v-col cols="auto">
       <!-- Normal Screen -->
 
@@ -32,7 +32,7 @@
           <v-alert :type="Alert_type" v-if="Alert">{{ Alert_text }}</v-alert>
       <!-- </v-flex> -->
     </v-col>
-  </v-row>
+  <!-- </v-row> -->
 </template>
 
 <script>
