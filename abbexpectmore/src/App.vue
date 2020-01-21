@@ -1,16 +1,9 @@
-<template>
-  <v-app>
+<template >
+  <v-app id="background">
     <toolbar />
-    <v-content class="grey darken-4">
+    <v-content>
 
       <v-row align="start" justify="space-around" no-gutters>
-
-        <!-- for visual lamp/render a mirror -->
-      <!-- <v-card dark class="grey darken-3 ma-4">
-        <v-icon size="100">
-          mdi-lightbulb-outline
-        </v-icon>
-      </v-card> -->
 
       <!-- Actual app, all views and content -->
       <v-fade-transition mode="out-in">
@@ -57,3 +50,8 @@ export default {
 };
 </script>
 
+<style>
+  #background{
+    background-image: url('https://images.unsplash.com/photo-1513346940221-6f673d962e97?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80')
+  }
+</style>
