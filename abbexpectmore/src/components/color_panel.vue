@@ -23,7 +23,7 @@
               <v-slider 
               color="#f3952d"
               :label='this.bright  + "%"'
-              inverse-label= true
+              inverse-label= True
               v-model="bright">
               </v-slider>
           </v-row>
@@ -94,13 +94,11 @@ export default {
     ]),
     send() {
       this.$store.state.loading = true
-      this.$store.state.sends.method = 'brightness'
       this.$store.state.sends.value = String(this.bright)
       this.$store.dispatch('postRGB')
     },
     ono() {
       this.$store.state.loading = true
-      this.$store.state.sends.method = 'power'
       this.$store.state.onOff = this.switch1
       if (this.switch1 == true) {
         this.$store.state.sends.value = 'on'

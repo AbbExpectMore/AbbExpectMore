@@ -72,7 +72,7 @@ const store = new Vuex.Store({
         .then(respons => {
           state.info = respons.data
           state.loading = false
-          // console.log(state.info)
+          console.log(state.info)
         })
     },
     log_out: (state) => {
