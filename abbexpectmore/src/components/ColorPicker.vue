@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- <span class="white--text">{{color}}</span> -->
-    <color-picker variant="persistent" v-bind="color" @input="onInput" ></color-picker>
+    <color-picker @change="yes" variant="persistent" v-bind="color" @input="onInput" ></color-picker>
     <v-row align="start" justify="space-around">
       <v-btn dark style="transform: scale(1.25)" class="mt-4" @click="yes()">Update</v-btn>
     </v-row>
@@ -36,6 +36,9 @@ export default {
       'postRGB',
       'log_out'
     ]),
+    colorwell(){
+      console.log('hej')
+    },
     onInput(hue){
       this.color.hue = hue;
     },
