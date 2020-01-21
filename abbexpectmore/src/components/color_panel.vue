@@ -15,15 +15,23 @@
               v-model="switch1"
               style="transform: scale(1.75)"
               @change="ono()"
+              :loading="this.$store.state.loading"
             ></v-switch>
           </v-row>
 
           <v-row align="start" justify="space-around" no-gutters v-if="mode == 'Brightness'">
-              <v-slider color="#f3952d" v-model="bright"></v-slider>
+              <v-slider 
+              color="#f3952d"
+              :label='this.bright  + "%"'
+              inverse-label= true
+              v-model="bright">
+              </v-slider>
           </v-row>
           <v-row align="start" justify="space-around" no-gutters v-if="mode == 'Brightness'">
-          <v-btn @click="send()">
-            Update
+          <v-btn 
+          @click="send()"
+          :loading="this.$store.state.loading"
+          >Update
           </v-btn>
           </v-row>
           <v-row v-if="mode == 'Color Wheel'" align="start" justify="space-around" no-gutters>
@@ -55,7 +63,8 @@ export default {
           'locked',
           'connected',
           'onOff',
-          'sends'
+          'sends',
+          'loading'
       ])
   },
   data: () => ({
@@ -84,11 +93,13 @@ export default {
       'postRGB'
     ]),
     send() {
+      this.$store.state.loading = true
       this.$store.state.sends.method = 'brightness'
       this.$store.state.sends.value = String(this.bright)
       this.$store.dispatch('postRGB')
     },
     ono() {
+      this.$store.state.loading = true
       this.$store.state.sends.method = 'power'
       this.$store.state.onOff = this.switch1
       if (this.switch1 == true) {
@@ -112,19 +123,3 @@ export default {
   font-size: 20px;
 }
 </style>
-
-    // on: {
-    //   method: 'power',
-    //   value: 'on',
-    //   pass: 'okokokok'
-    // },
-    // off: {
-    //   method: 'power',
-    //   value: 'off',
-    //   pass: 'okokokok'
-    // },
-    // colorR: {
-    //   method: 'ctrl',
-    //   value: this.colorRgb,
-    //   pass: 'okokokok'
-    // }

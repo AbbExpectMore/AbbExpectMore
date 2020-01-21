@@ -17,9 +17,10 @@
         <v-alert
           v-if="!this.$store.state.ad_stat && this.$store.state.tried_once"
           class="mx-4"
-          type="error"
+          color="#f3952d"
+          type="warning"
           :dismissible="true"
-        >Login Failed!</v-alert>
+        >Login Failed</v-alert>
       </v-card>
       <v-card v-if="this.$store.state.ad_stat" class="ma-7 py-2 px-10" dark>
         <v-row align="start" justify="space-around" no-gutters>

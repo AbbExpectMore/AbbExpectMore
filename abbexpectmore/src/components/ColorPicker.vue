@@ -3,7 +3,13 @@
     <!-- <span class="white--text">{{color}}</span> -->
     <color-picker @change="yes" variant="persistent" v-bind="color" @input="onInput" ></color-picker>
     <v-row align="start" justify="space-around">
-      <v-btn dark style="transform: scale(1.25)" class="mt-4" @click="yes()">Update</v-btn>
+      <v-btn 
+      dark 
+      style="transform: scale(1.25)" 
+      class="mt-4" 
+      @click="yes()"
+      :loading="this.$store.state.loading"
+      >Update</v-btn>
     </v-row>
   </div>
 </template>
@@ -19,7 +25,8 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'sends'
+      'sends',
+      'loading'
     ])
   },
   data: () => ({
@@ -43,6 +50,7 @@ export default {
       this.color.hue = hue;
     },
     yes(){
+      this.$store.state.loading = true;
       this.rgb = this.HSLToRGB(this.color.hue, this.color.saturation, this.color.luminosity)
       this.$store.state.sends.value = this.rgb
       this.$store.state.sends.method = 'ctrl'

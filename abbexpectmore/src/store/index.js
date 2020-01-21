@@ -71,6 +71,7 @@ const store = new Vuex.Store({
         .post('https://4f4owrwgp2.execute-api.us-east-1.amazonaws.com/v1/change', JSON.stringify(state.sends))
         .then(respons => {
           state.info = respons.data
+          state.loading = false
           // console.log(state.info)
         })
     },

@@ -1,5 +1,7 @@
 <template>
   <v-row align="start" justify="space-around" no-gutters>
+    <v-card class="ma-4 grey darken-4" max-width=400>
+  <v-row align="start" justify="space-around" no-gutters>
     <!-- <v-card class="mx-auto grey darken-4"> -->
     <h1 class="ma-4 grey--text text--lighten-1 text-center">ABB Expect More</h1>
     <h3 class="grey--text text--lighten-1 text-center">This website and the lamp it's controls was created as a school project by students attending ABB Industrigymnasium, 2020.
@@ -24,6 +26,8 @@
     </v-col>
 
     <!-- </v-card> -->
+  </v-row>
+  </v-card>
   </v-row>
 </template>
 
