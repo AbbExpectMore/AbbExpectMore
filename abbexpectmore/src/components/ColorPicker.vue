@@ -26,17 +26,19 @@ export default {
   computed: {
     ...mapGetters([
       'sends',
-      'loading'
+      'loading',
+      'rgb'
     ])
   },
   data: () => ({
     color: { 
-      hue: 50,
+      hue: 0,
       saturation: 100,
       luminosity: 50,
       alpha: 1
     },
     rgb: undefined,
+    title: 'click'
   }),
   methods: {
     ...mapActions([
@@ -44,7 +46,7 @@ export default {
       'log_out'
     ]),
     colorwell(){
-      console.log('hej')
+      console.log('test')
     },
     onInput(hue){
       this.color.hue = hue;
@@ -86,9 +88,7 @@ export default {
   b = Math.round((b + m) * 255);
 
   return "(" + r + "," + g + "," + b + ")";
-}
-
-
+},
   }
 };
 </script>

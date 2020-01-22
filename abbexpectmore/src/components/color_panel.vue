@@ -92,19 +92,26 @@ export default {
     ...mapActions([
       'postRGB'
     ]),
+    map(value, low1, high1, low2, high2) {
+    return Math.round(low2 + (high2 - low2) * (value - low1) / (high1 - low1));
+    },
     send() {
       this.$store.state.loading = true
-      this.$store.state.sends.value = String(this.bright)
+      let bri = this.map(this.bright, 0, 100, 0, 255)
+      let bro = `(${bri},${bri},${bri})`
+      // console.log(bro)
+      this.$store.state.sends.value = bro
+      // console.log(this.$store.state.sends.value)
       this.$store.dispatch('postRGB')
     },
     ono() {
       this.$store.state.loading = true
       this.$store.state.onOff = this.switch1
       if (this.switch1 == true) {
-        this.$store.state.sends.value = 'on'
+        this.$store.state.sends.value = '(255,255,255)'
         this.$store.dispatch('postRGB')
       } else {
-        this.$store.state.sends.value = 'off'
+        this.$store.state.sends.value = '(0,0,0)'
         this.$store.dispatch('postRGB')
       }
     }

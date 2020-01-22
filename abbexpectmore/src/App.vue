@@ -17,7 +17,7 @@
 
 <script>
 import axios from 'axios'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
   components: {
@@ -37,15 +37,24 @@ export default {
     ])
   },
   created(){
-    axios
+    this.check();
+    setInterval(() => {
+      this.check()
+    }, 10000)
+  },
+  methods: {
+    // ...mapActions([
+    //   'locked',
+    // ]),
+    check(){
+      axios
       .get('https://4f4owrwgp2.execute-api.us-east-1.amazonaws.com/v1/')
       .then(respons => {
         var info = respons.data
         console.log(info)
         this.$store.state.locked = info.locked
       })
-  },
-  methods: {
+    }
   }
 };
 </script>

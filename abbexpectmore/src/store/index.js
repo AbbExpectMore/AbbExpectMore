@@ -24,7 +24,7 @@ const store = new Vuex.Store({
       action: 'lock',
       value: undefined
     },
-    rgb: 'rgb(50,100,100)',
+    rgb: '(0,0,0)',
     loading: false,
     tried_once: false
   },
@@ -75,6 +75,9 @@ const store = new Vuex.Store({
           console.log(state.info)
         })
     },
+    locked: (state) => {
+      console.log('Hello')
+    },
     log_out: (state) => {
       state.ad_stat = false
       state.creds = {
@@ -119,6 +122,9 @@ const store = new Vuex.Store({
     },
     lock: (context) => {
       context.commit('lock')
+    },
+    locked: (context) => {
+      context.commit('locked')
     },
   }
 })
