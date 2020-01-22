@@ -68,7 +68,7 @@ export default {
       ])
   },
   data: () => ({
-    bright: undefined,
+    bright: 0,
     counter: 0,
     client: undefined,
     user: "abbexpectmore@gmail.com",
