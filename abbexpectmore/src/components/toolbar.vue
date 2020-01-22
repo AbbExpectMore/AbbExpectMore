@@ -25,9 +25,9 @@
             mdi-lightbulb-off-outline
           </v-icon>
         </v-btn>
-        <v-btn to="/help">
+        <v-btn to="/colors">
         <v-icon>
-          mdi-check-underline-circle-outline
+          mdi-table-large
         </v-icon>
         </v-btn>
         <v-btn to="/about">

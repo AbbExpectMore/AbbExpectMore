@@ -22,7 +22,7 @@
           :dismissible="true"
         >Login Failed</v-alert>
       </v-card>
-      <v-card min-width="355" v-if="this.$store.state.ad_stat" class="ma-7 py-2 px-10" dark>
+      <v-card min-width="337" v-if="this.$store.state.ad_stat" class="ma-7 py-2 px-10" dark>
         <v-row align="start" justify="space-around" no-gutters>
           <v-switch
             @change="lockIt()"

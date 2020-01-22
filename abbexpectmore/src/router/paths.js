@@ -17,9 +17,9 @@ export default [{
     //   component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
   },
   {
-    path: '/Help',
-    name: 'Help',
-    view: 'Help',
+    path: '/colors',
+    name: 'Colors',
+    view: 'Colors',
     //   component: () => import(/* webpackChunkName: "about" */ '../views/GetAnswer.vue')
   }
 ];

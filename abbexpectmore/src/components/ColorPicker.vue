@@ -3,6 +3,16 @@
     <!-- <span class="white--text">{{color}}</span> -->
     <color-picker @change="yes" variant="persistent" v-bind="color" @input="onInput" ></color-picker>
     <v-row align="start" justify="space-around">
+      <v-slider color="#f3952d" v-model='color.luminosity'></v-slider>
+    </v-row>
+    <v-row align="start" justify="space-around">
+      <v-slider color="#f3952d" v-model="color.saturation"></v-slider>
+    </v-row>
+
+    <p>Use the color wheel to pick a color and then
+      use the sliders to chose saturation and luminosity.</p>
+
+    <v-row align="start" justify="space-around">
       <v-btn 
       dark 
       style="transform: scale(1.25)" 
