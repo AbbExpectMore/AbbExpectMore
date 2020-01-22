@@ -26,8 +26,7 @@ export default {
   computed: {
     ...mapGetters([
       'sends',
-      'loading',
-      'rgb'
+      'loading'
     ])
   },
   data: () => ({

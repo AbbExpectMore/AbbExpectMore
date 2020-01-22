@@ -26,7 +26,8 @@ const store = new Vuex.Store({
     },
     rgb: '(0,0,0)',
     loading: false,
-    tried_once: false
+    tried_once: false,
+    last_val: 0,
   },
   getters: {
     saleProducts: state => {

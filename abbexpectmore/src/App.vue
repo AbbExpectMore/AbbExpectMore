@@ -30,17 +30,23 @@ export default {
       luminosity: 50,
       alpha: 1
     },
+    once: false,
   }),
   computed: {
     ...mapGetters([
-      'locked'
+      'locked',
+      'last_val',
+      'onOff'
     ])
   },
   created(){
     this.check();
     setInterval(() => {
       this.check()
-    }, 10000)
+    }, 1000)
+  },
+  mounted(){
+    
   },
   methods: {
     // ...mapActions([
@@ -51,8 +57,16 @@ export default {
       .get('https://4f4owrwgp2.execute-api.us-east-1.amazonaws.com/v1/')
       .then(respons => {
         var info = respons.data
-        console.log(info)
         this.$store.state.locked = info.locked
+        this.$store.state.last_val = info.Last_val
+        if (!this.once){
+          if (this.$store.state.last_val == '(0,0,0)'){
+            this.$store.state.onOff = false
+          }else if (this.$store.state.last_val == '(255,255,255)'){
+            this.$store.state.onOff = true
+          }
+          this.once = true
+        }
       })
     }
   }

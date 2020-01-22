@@ -23,7 +23,7 @@
               <v-slider 
               color="#f3952d"
               :label='this.bright  + "%"'
-              inverse-label= True
+              inverse-label
               v-model="bright">
               </v-slider>
           </v-row>
@@ -86,7 +86,8 @@ export default {
     ah: {
       method: undefined, //brightness
       value: undefined
-    }
+    },
+    inv: true,
   }),
   methods: {
     ...mapActions([
