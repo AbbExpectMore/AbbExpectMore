@@ -1,3 +1,9 @@
+/*
+
+Använder https://github.com/tsi-software/Secure_ESP8266_MQTT_poc
+
+*/
+
 
 #include <ESP8266WiFi.h>
 #include <PubSubClient.h>
@@ -10,7 +16,7 @@
 #define B 13 //D7
 
 const int topic_count = 3;
-const char* topics[topic_count] = {"/ctrl", "/power", "/brightness"};
+const char *topics[topic_count] = {"/ctrl", "/power", "/brightness"};
 
 //TODO: implement secure credintials as a runtime config file
 //      rather than a header file.
@@ -82,11 +88,18 @@ void callback(char *topic, byte *payload, unsigned int length)
   }
   else if (topicStr == "/power")
   {
-    // TODO
+    if (payloadStr == "on")
+    {
+      change(255, 255, 255);
+    }
+    else
+    {
+      change(0, 0, 0);
+    }
   }
   else if (topicStr == "/brightness")
   {
-    // TODO
+    change(map(payloadStr.toInt(), 0, 100, 0, 255), map(payloadStr.toInt(), 0, 100, 0, 255), map(payloadStr.toInt(), 0, 100, 0, 255));
   }
 }
 
