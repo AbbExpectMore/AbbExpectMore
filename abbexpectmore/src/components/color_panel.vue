@@ -7,6 +7,7 @@
             <v-radio label="On/Off" value="On/Off"></v-radio>
             <v-radio label="Color Wheel" value="Color Wheel"></v-radio>
             <v-radio label="Brightness" value="Brightness"></v-radio>
+            <v-radio label="Modes" value="Modes"></v-radio>
           </v-radio-group>
           <v-row align="start" justify="space-around" no-gutters>
             <v-switch
@@ -17,6 +18,13 @@
               @change="ono()"
               :loading="this.$store.state.loading"
             ></v-switch>
+          </v-row>
+
+          <v-row align="start" justify="space-around" no-gutters v-if="mode == 'Modes'">
+            <v-btn
+            @click="send1()">
+              Rainbow
+            </v-btn>
           </v-row>
 
           <v-row align="start" justify="space-around" no-gutters v-if="mode == 'Brightness'">
@@ -95,6 +103,11 @@ export default {
     ]),
     map(value, low1, high1, low2, high2) {
     return Math.round(low2 + (high2 - low2) * (value - low1) / (high1 - low1));
+    },
+    send1(){
+      this.$store.state.loading = true
+      this.$store.state.sends.value = '(10,55,250)'
+      this.$store.dispatch('postRGB')
     },
     send() {
       this.$store.state.loading = true
