@@ -9,9 +9,8 @@
 
       <!-- Actual app, all views and content -->
       <!-- <v-btn :disabled=connected @click="connect()">Connect</v-btn>
-      <v-btn @click="subscribe()">subscribe</v-btn>
-      <v-btn @click="send()">Send</v-btn>
-      <v-btn @click="reset()">Reset</v-btn> -->
+      <v-btn :disabled=subscribed @click="subscribe()">subscribe</v-btn>
+      <v-btn @click="send()">Send</v-btn> -->
       <v-fade-transition mode="out-in">
         <router-view/>
       </v-fade-transition>
@@ -46,13 +45,15 @@ export default {
     once: false,
     topic: 'abbexpectmore@gmail.com/lock',
     topic1: 'abbexpectmore@gmail.com/l',
-    last_payload: false
+    last_payload: false,
+    subscribed: false
   }),
   computed: {
     ...mapGetters([
       'locked',
       'last_val',
-      'onOff'
+      'onOff',
+      // 'client'
     ])
   },
   created(){
@@ -61,18 +62,21 @@ export default {
     // this.subscribe()
     setInterval(() => {
       this.check()
-      // this.client.on("message", function(topic, payload){
-      //     console.log([topic,payload].join(": "))
-      // })
-    }, 1000)
+    }, 20000)
+  },
+  updated(){
+    axios
+      .get('https://4f4owrwgp2.execute-api.us-east-1.amazonaws.com/v1/')
+      .then(respons => {
+        var info = respons.data
+        this.$store.state.locked = info.locked
+        // console.log(info.locked)
+      })
   },
   mounted(){
     
     },
   methods: {
-    reset(){
-      this.once1 = false
-    },
     send() {
       let msg = String(this.message)
       this.client.publish(this.topic, msg);
@@ -83,6 +87,7 @@ export default {
       this.client.subscribe(this.topic, function(err, granted){
         console.log(granted)
       })
+      this.subscribed = true
     },
     con_sub(){
       
@@ -120,6 +125,7 @@ export default {
           this.Alert = true;
           this.connected = false;
         });
+      this.$store.state.client = this.client
       this.connected = true;
     },
     check(){

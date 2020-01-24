@@ -49,7 +49,11 @@ export default {
     colorpanel: () => import("@/components/color_panel.vue")
   },
   computed: {
-    ...mapGetters(["ad_stat", "locked"])
+    ...mapGetters([
+      "ad_stat",
+      "locked",
+      'client'
+      ])
   },
   data: () => ({
     pass: undefined,
@@ -65,7 +69,11 @@ export default {
   methods: {
     ...mapActions(["cred_check", "log_out", "lock"]),
     enter(){
-      console.log('Hello')
+      // console.log('Hello')
+    },
+    send() {
+      let msg = '1'
+      this.$store.state.client.publish(this.topic, msg);
     },
     loggo() {
       this.creds.user = undefined;
@@ -75,6 +83,7 @@ export default {
     lockIt() {
       this.$store.dispatch("lock");
       this.switch_admin = this.$store.state.locked;
+      this.send()
     },
     login() {
       if (this.pass != undefined) {

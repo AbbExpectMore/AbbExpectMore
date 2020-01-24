@@ -28,6 +28,7 @@ const store = new Vuex.Store({
     loading: false,
     tried_once: false,
     last_val: 0,
+    // client: null
   },
   getters: {
     saleProducts: state => {
@@ -59,6 +60,15 @@ const store = new Vuex.Store({
           }
         })
     },
+    check_lock(){
+      axios
+        .get('https://4f4owrwgp2.execute-api.us-east-1.amazonaws.com/v1/')
+        .then(respons => {
+          var info = respons.data
+          this.$store.state.locked = info.locked
+          // console.log(info.locked)
+        })
+    },
     postRGB: (state) => {
       // state.rgb = 'rgb' + String(state.sends.value)
       // console.log(state.sends)
@@ -69,15 +79,24 @@ const store = new Vuex.Store({
         state.lk.id = ""
       }
       axios
-        .post('https://4f4owrwgp2.execute-api.us-east-1.amazonaws.com/v1/change', JSON.stringify(state.sends))
-        .then(respons => {
-          state.info = respons.data
-          state.loading = false
-          console.log(state.info)
-        })
+      .post('https://4f4owrwgp2.execute-api.us-east-1.amazonaws.com/v1/change', JSON.stringify(state.sends))
+      .then(respons => {
+        state.info = respons.data
+        state.loading = false
+        // console.log(state.info.Meddelande)
+        if (state.info.Meddelande == 'låst!'){
+          axios
+            .get('https://4f4owrwgp2.execute-api.us-east-1.amazonaws.com/v1/')
+            .then(respons => {
+              var info = respons.data
+              state.locked = info.locked
+              // console.log(info.locked)
+          })
+        }
+      })
     },
     locked: (state) => {
-      console.log('Hello')
+      // console.log('Hello')
     },
     log_out: (state) => {
       state.ad_stat = false

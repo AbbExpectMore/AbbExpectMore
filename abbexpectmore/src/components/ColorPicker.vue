@@ -28,6 +28,7 @@
 import ColorPicker from '@radial-color-picker/vue-color-picker'
 import { mapGetters } from "vuex";
 import { mapActions } from 'vuex';
+import axios from 'axios'
 
 export default {
   components: {
@@ -55,16 +56,25 @@ export default {
       'log_out'
     ]),
     colorwell(){
-      console.log('test')
+      // console.log('test')
     },
     onInput(hue){
       this.color.hue = hue;
     },
+    check_lock(){
+      axios
+        .get('https://4f4owrwgp2.execute-api.us-east-1.amazonaws.com/v1/')
+        .then(respons => {
+          var info = respons.data
+          this.$store.state.locked = info.locked
+          // console.log(info.locked)
+        })
+    },
     yes(){
       this.$store.state.loading = true;
+      this.check_lock()
       this.rgb = this.HSLToRGB(this.color.hue, this.color.saturation, this.color.luminosity)
       this.$store.state.sends.value = this.rgb
-      this.$store.state.sends.method = 'ctrl'
       this.$store.dispatch('postRGB')
     },
     HSLToRGB(h,s,l) {
