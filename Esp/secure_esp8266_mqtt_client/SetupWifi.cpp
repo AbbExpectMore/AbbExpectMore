@@ -22,7 +22,7 @@ void SetupWifi::setClock() {
 
     //void configTime(int timezone, int daylightOffset_sec, const char* server1, const char* server2, const char* server3)
     //https://github.com/esp8266/Arduino/blob/master/cores/esp8266/time.c
-    configTime(-8 * 3600, 0, "pool.ntp.org", "time.nist.gov", "time.windows.com");
+    configTime(+1* 3600, 0, "pool.ntp.org", "time.nist.gov", "time.windows.com");
     setClock_status = STARTED;
     DEBUG_LOG("Waiting for NTP time sync: ");
     setClock_AsyncWait.startWaiting(millis(), 1000); // Log every 1 second.
