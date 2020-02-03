@@ -1,30 +1,32 @@
 <template>
-  <v-container>
-    <v-layout text-center wrap>
-      <v-flex xs12>
-        <v-layout justify-center id="Body">
-          <v-img
-          alt="Expetrum Logo"
-          class="shrink mr-2"
+  <v-row align="start" justify="space-around" no-gutters>
+    <!-- <v-card class="mx-auto grey darken-4"> -->
+
+    <v-col cols="12">
+      <v-row align="start" justify="space-around" no-gutters>
+        <v-img
+          alt="ABBgym Logo"
+          class="shrink ma-2 pa-2"
           contain
           src="@/assets/logo.png"
           transition="scale-transition"
-          width="250"
+          minWidth="300"
+          maxWidth="300"
+          position="center center"
         />
-        <!-- <h1>
-            This is an about page
-        </h1> -->
-        </v-layout>
-      </v-flex>
-    </v-layout>
-  </v-container>
+      </v-row>
+    </v-col>
+
+    <h1 class="grey--text text--lighten-1 text-center">ABB Expect More</h1>
+    <!-- </v-card> -->
+  </v-row>
 </template>
 
 <style>
-
 #Body {
   color: rgb(255, 255, 255);
-  font-size:20px;
+  font-size: 20px;
 }
-
 </style>
+
+

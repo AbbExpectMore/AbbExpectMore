@@ -11,9 +11,15 @@ export default [{
     //   component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
   },
   {
-    path: '/Help',
-    name: 'Help',
-    view: 'Help',
-    //   component: () => import(/* webpackChunkName: "about" */ '../views/GetAnswer.vue')
-  }
+    path: '/Admin',
+    name: 'Admin',
+    view: 'Admin',
+    //   component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+  },
+  // {
+  //   path: '/Help',
+  //   name: 'Help',
+  //   view: 'Help',
+  //   //   component: () => import(/* webpackChunkName: "about" */ '../views/GetAnswer.vue')
+  // }
 ];

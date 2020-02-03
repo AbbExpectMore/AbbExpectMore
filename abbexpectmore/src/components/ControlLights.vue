@@ -1,31 +1,79 @@
 <template>
-  <v-container>
-    <v-layout text-center wrap>
-      <v-flex xs12>
-        <v-layout justify-center id="Body">
-          <h1> Use this page to control lights<br>More is comming soon!</h1>
-        </v-layout>
-      </v-flex>
-    </v-layout>
-  </v-container>
+  <v-row align="start" justify="space-around" no-gutters>
+    <v-col cols="auto">
+
+
+      <!-- Page locked -->
+      <v-card v-if="this.$store.state.locked" dark class="ma-4 grey darken-3">
+        <h1>This paged is locked</h1>
+      </v-card>
+
+      <!-- Normal Screen (C<onnected)-->
+      <v-card v-if="!this.$store.state.locked" dark class="pa-4 ma-4 grey darken-3">
+        <colorpanel/>
+      </v-card>
+
+    </v-col>
+  </v-row>
 </template>
 
 <script>
-export default {
-  name: 'ControlLights',
+import ColorPicker from "vue-color-picker-wheel";
+import { mapGetters } from "vuex";
+import axios from 'axios';
 
+var mqtt = require("mqtt"),
+  url = require("url");
+
+export default {
+  name: "ControlLights",
+  components: {
+    //ColorPicker,
+    colorpanel: () => import("@/components/color_panel.vue")
+  },
+  computed: {
+      ...mapGetters([
+          'locked'
+      ])
+  },
   data: () => ({
-    
-  
+    counter: 0,
+    value: undefined,
+    mode: undefined,
+    switch1: false,
+    ch: 0,
+    color: undefined,
+    colorRgb: undefined,
+    info: undefined,
+    data: {
+      method: "power",
+      value: "on",
+      pass: "okokokok"
+    }
   }),
+  methods: {
+   
+  },
+  created(){
+  }
+  // https://cors-anywhere.herokuapp.com/
+  // mounted(){
+  //   console.log(this.data)
+     
+  //   axios
+  //     .post('https://4f4owrwgp2.execute-api.us-east-1.amazonaws.com/v1/change', JSON.stringify(this.data))
+  //     .then(respons => {
+  //       this.info = respons.data
+  //       console.log(this.info)
+  //     })
+  //   console.log('Body: '+JSON.stringify(this.data))
+  // }
 };
 </script>
 
 <style>
-
 #Body {
   color: rgb(255, 255, 255);
-  font-size:20px;
+  font-size: 20px;
 }
-
 </style>

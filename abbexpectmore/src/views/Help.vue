@@ -1,15 +1,15 @@
 <template>
-  <v-container>
-    <v-layout text-center wrap>
-      <v-flex xs12>
-        <v-layout justify-center id="Body">
-          <h1>
-            Help Page
-          </h1>
-        </v-layout>
-      </v-flex>
-    </v-layout>
-  </v-container>
+  <v-row align="start" justify="space-around" no-gutters>
+    <v-progress-circular
+        :indeterminate="true"
+        :rotate="0"
+        :size="180"
+        :value="0"
+        :width="10"
+        color="light-blue"
+        class ="ma-12"
+      ></v-progress-circular>
+  </v-row>
 </template>
 
 <style>
