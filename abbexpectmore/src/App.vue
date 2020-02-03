@@ -62,7 +62,7 @@ export default {
     // this.subscribe()
     setInterval(() => {
       this.check()
-    }, 20000)
+    }, 2000)
   },
   updated(){
     axios

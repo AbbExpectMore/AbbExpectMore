@@ -83,7 +83,6 @@ export default {
     lockIt() {
       this.$store.dispatch("lock");
       this.switch_admin = this.$store.state.locked;
-      this.send()
     },
     login() {
       if (this.pass != undefined) {
