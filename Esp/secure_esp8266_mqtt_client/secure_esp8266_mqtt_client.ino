@@ -18,6 +18,8 @@ const int topic_count = 3;
 const char *topics[topic_count] = {"/ctrl", "/power", "/brightness"};
 int last_color[3] = {0, 0, 0};
 int rainbow_color[3] = {10, 55, 250};
+int rawe_color[3] = {9, 55, 250};
+
 unsigned long time_now;
 int animationDelay = 50;
 int counter = 0;
@@ -192,42 +194,79 @@ void loop()
   }
   pubsubClient.loop();
 
-  if (last_color[0] == rainbow_color[0] && last_color[1] == rainbow_color[1] && last_color[2] == rainbow_color[2] && (millis() > time_now + animationDelay))
+  for (int i = 0; i < 3; i++) // check for rainbow
+  {
+    if (last_color[i] != rainbow_color[i])
     {
-
-      DEBUG_LOGLN("Doin the rainbow");
-
-      float colorNumber = counter > numColors ? counter - numColors : counter;
-
-      // Play with the saturation and brightness values
-      // to see what they do
-      float saturation = 1;                               // Between 0 and 1 (0 = gray, 1 = full color)
-      float brightness = .05;                             // Between 0 and 1 (0 = dark, 1 is full brightness)
-      float hue = (colorNumber / float(numColors)) * 360; // Number between 0 and 360
-      long color = HSBtoRGB(hue, saturation, brightness);
-
-      // Get the red, blue and green parts from generated color
-      int red = color >> 16 & 255;
-      int green = color >> 8 & 255;
-      int blue = color & 255;
-
-      red = map(red, 0, 12, 0, 255);
-      green = map(green, 0, 12, 0, 255);
-      blue = map(blue, 0, 12, 0, 255);
-
-      change(red, green, blue);
-
-      // Counter can never be greater then 2 times the number of available colors
-      // the colorNumber = line above takes care of counting backwards (nicely looping animation)
-      // when counter is larger then the number of available colors
-      counter = (counter + 1) % (numColors * 2);
-
-      // If you uncomment this line the color changing starts from the
-      // beginning when it reaches the end (animation only plays forward)
-      // counter = (counter + 1) % (numColors);
-
-      time_now = millis();
+      break;
     }
+    if (i == 3 && millis() > time_now + animationDelay)
+    {
+      rainbow();
+    }
+  }
+
+  for (int i = 0; i < 3; i++) // check for rainbow
+  {
+    if (last_color[i] != rawe_color[i])
+    {
+      break;
+    }
+    if (i == 3 ){
+      rawe();
+    }
+  }
+
+  // if (last_color == rainbow_color && (millis() > time_now + animationDelay))
+  // {
+  //   rainbow();
+  // }
+  // if (last_color == rawe_color)
+  // {
+  //   rawe();
+  // }
+}
+
+void rawe()
+{
+  DEBUG_LOGLN("Doin the rawe");
+  change(random(0, 255), random(0, 255), random(0, 255));
+}
+
+void rainbow()
+{
+  DEBUG_LOGLN("Doin the rainbow");
+
+  float colorNumber = counter > numColors ? counter - numColors : counter;
+
+  // Play with the saturation and brightness values
+  // to see what they do
+  float saturation = 1;                               // Between 0 and 1 (0 = gray, 1 = full color)
+  float brightness = .05;                             // Between 0 and 1 (0 = dark, 1 is full brightness)
+  float hue = (colorNumber / float(numColors)) * 360; // Number between 0 and 360
+  long color = HSBtoRGB(hue, saturation, brightness);
+
+  // Get the red, blue and green parts from generated color
+  int red = color >> 16 & 255;
+  int green = color >> 8 & 255;
+  int blue = color & 255;
+
+  red = map(red, 0, 12, 0, 255);
+  green = map(green, 0, 12, 0, 255);
+  blue = map(blue, 0, 12, 0, 255);
+
+  change(red, green, blue);
+
+  // Counter can never be greater then 2 times the number of available colors
+  // the colorNumber = line above takes care of counting backwards (nicely looping animation)
+  // when counter is larger then the number of available colors
+  counter = (counter + 1) % (numColors * 2);
+
+  // If you uncomment this line the color changing starts from the
+  // beginning when it reaches the end (animation only plays forward)
+  // counter = (counter + 1) % (numColors);
+
+  time_now = millis();
 }
 
 long HSBtoRGB(float _hue, float _sat, float _brightness)
