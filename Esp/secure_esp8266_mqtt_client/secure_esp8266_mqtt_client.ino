@@ -240,6 +240,7 @@ void rawe()
 {
   DEBUG_LOGLN("Doin the rawe");
   change(random(0, 255), random(0, 255), random(0, 255));
+  delay(100);
 }
 
 void rainbow()
