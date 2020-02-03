@@ -48,7 +48,11 @@ export default {
               let val = valu.split(',')
               if (val[0] == val[1] && val[2]){
                   null
-              }else{
+              }
+              else if(){
+                
+              }
+              else{
                   this.all_vals.push("rgb" + info[i][0]);
               }
           }

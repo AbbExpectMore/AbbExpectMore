@@ -22,8 +22,18 @@
 
           <v-row align="start" justify="space-around" no-gutters v-if="mode == 'Modes'">
             <v-btn
-            @click="send1()">
+            fab
+            @click="send1()"
+            class="ma-2">
               Rainbow
+            </v-btn>
+            <v-btn
+            class="ma-2"
+            fab
+            @click="send2()">
+              <v-icon>
+                mdi-radioactive
+              </v-icon>
             </v-btn>
           </v-row>
 
@@ -107,6 +117,11 @@ export default {
     send1(){
       this.$store.state.loading = true
       this.$store.state.sends.value = '(10,55,250)'
+      this.$store.dispatch('postRGB')
+    },
+    send2(){
+      this.$store.state.loading = true
+      this.$store.state.sends.value = '(9,55,250)'
       this.$store.dispatch('postRGB')
     },
     send() {
