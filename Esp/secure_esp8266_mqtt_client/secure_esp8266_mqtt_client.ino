@@ -196,12 +196,20 @@ void loop()
 
   for (int i = 0; i < 3; i++) // check for rainbow
   {
+    // DEBUG_LOGLN(i);
     if (last_color[i] != rainbow_color[i])
     {
+      // DEBUG_LOGLN(i);
+      // DEBUG_LOG(last_color[i]);
+      // DEBUG_LOG(" är inte ");
+      // DEBUG_LOGLN(rainbow_color[i]);
+      // delay(100);
       break;
     }
-    if (i == 3 && millis() > time_now + animationDelay)
+
+    if (i == 2 && millis() > time_now + animationDelay)
     {
+      // DEBUG_LOGLN("rainbowtime");
       rainbow();
     }
   }
@@ -212,7 +220,8 @@ void loop()
     {
       break;
     }
-    if (i == 3 ){
+    if (i == 2)
+    {
       rawe();
     }
   }
