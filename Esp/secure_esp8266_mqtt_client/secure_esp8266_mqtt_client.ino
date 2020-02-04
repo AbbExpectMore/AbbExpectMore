@@ -10,22 +10,25 @@ Använder https://github.com/tsi-software/Secure_ESP8266_MQTT_poc
 #include "globals.h"
 #include "SetupWifi.h"
 
-#define G 14 //D5
-#define R 12 //D6
-#define B 13 //D7
+#define G 14     //D5
+#define R 12     //D6
+#define B 13     //D7
 #define knapp 15 // D8
 
-const int topic_count = 3;
-const char *topics[topic_count] = {"/ctrl", "/power", "/brightness"};
+const int topic_count = 2;
+const char *topics[topic_count] = {"/ctrl", "/timeout"};
 int last_color[3] = {0, 0, 0};
 int rainbow_color[3] = {10, 55, 250};
 int rawe_color[3] = {9, 55, 250};
 
 unsigned long time_now;
+unsigned long timeout;
+unsigned long timeout_start;
 int animationDelay = 50;
 int counter = 0;
 int numColors = 255;
 int rawe_delay = 150;
+bool dotimeout = false;
 
 //TODO: implement secure credintials as a runtime config file
 //      rather than a header file.
@@ -45,6 +48,7 @@ static PubSubClient pubsubClient(setupWifi.getWiFiClient());
 
 void change(int x, int y, int z)
 {
+  DEBUG_LOGLN("Setting pins to:");
   DEBUG_LOGLN(x);
   DEBUG_LOGLN(y);
   DEBUG_LOGLN(z);
@@ -99,20 +103,11 @@ void callback(char *topic, byte *payload, unsigned int length)
 
     change(valR, valG, valB);
   }
-  else if (topicStr == "/power")
+  else if (topicStr == "/timeout")
   {
-    if (payloadStr == "on")
-    {
-      change(255, 255, 255);
-    }
-    else
-    {
-      change(0, 0, 0);
-    }
-  }
-  else if (topicStr == "/brightness")
-  {
-    change(map(payloadStr.toInt(), 0, 100, 0, 255), map(payloadStr.toInt(), 0, 100, 0, 255), map(payloadStr.toInt(), 0, 100, 0, 255));
+    dotimeout = true;
+    timeout_start = millis();
+    timeout = payloadStr.toInt();
   }
 }
 
@@ -166,7 +161,7 @@ void setup()
   pinMode(G, OUTPUT);
   pinMode(R, OUTPUT);
   pinMode(B, OUTPUT);
-  pinmode(knapp, INPUT);
+  pinMode(knapp, INPUT);
 
 #ifdef DEBUG
   Serial.begin(115200); // Start serial communication at 115200 baud
@@ -229,9 +224,23 @@ void loop()
     }
   }
 
-  if (digitalRead(knapp)){
-    last_color = {0, 0, 0};
+  if (digitalRead(knapp))
+  {
+    for (int i = 0; i < 2; i++)
+    {
+      last_color[i] = 0;
+    }
     change(0, 0, 0);
+  }
+
+  if ((millis() > timeout * 1000 + timeout_start) && dotimeout == true)
+  {
+    for (int i = 0; i < 2; i++)
+    {
+      last_color[i] = 0;
+    }
+    change(0, 0, 0);
+    dotimeout = false;
   }
 
   // if (last_color == rainbow_color && (millis() > time_now + animationDelay))
