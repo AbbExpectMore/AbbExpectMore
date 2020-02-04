@@ -2,10 +2,22 @@
   <div id="test2">
     <v-row align="start" justify="space-around" no-gutters>
       <v-card v-if="!this.$store.state.ad_stat" class="ma-7" dark>
-        
         <v-form class="ma-5 pa-4" v-model="form">
-          <v-text-field v-on:keyup.enter="login" dark v-model="creds.user" label="Username" required></v-text-field>
-          <v-text-field v-on:keyup.enter="login" dark v-model="pass" label="Password" type="password" required></v-text-field>
+          <v-text-field
+            v-on:keyup.enter="login"
+            dark
+            v-model="creds.user"
+            label="Username"
+            required
+          ></v-text-field>
+          <v-text-field
+            v-on:keyup.enter="login"
+            dark
+            v-model="pass"
+            label="Password"
+            type="password"
+            required
+          ></v-text-field>
           <v-row align="start" justify="space-around" no-gutters>
             <v-btn
               :v-if="!this.$store.state.ad_stat"
@@ -23,18 +35,59 @@
           :dismissible="true"
         >Login Failed</v-alert>
       </v-card>
-      <v-card min-width="337" v-if="this.$store.state.ad_stat" class="ma-7 py-2 px-10" dark>
+
+      <v-card width="337" v-if="this.$store.state.ad_stat" class="mt-2 pt-3 px-10" dark>
+        <v-radio-group v-model="option">
+          <v-radio label="Lock" value="Lock"></v-radio>
+          <v-radio label="Color Options" value="Color Options"></v-radio>
+          <v-radio label="Timers" value="Timers"></v-radio>
+        </v-radio-group>
+      </v-card>
+
+      <v-card
+        width="337"
+        v-if="this.$store.state.ad_stat && this.option == 'Lock'"
+        class="mt-2 pt-3 px-10"
+        dark
+      >
         <v-row align="start" justify="space-around" no-gutters>
           <v-switch
             @change="lockIt()"
             color="#f3952d"
             v-model="switch_admin"
-            style="transform: scale(1.25)"
-            label="Admin Control"
+            style="transform: scale(1.5)"
+            label="Lock"
           ></v-switch>
         </v-row>
-        <colorpanel v-if="this.$store.state.locked" />
       </v-card>
+      <v-card
+        width="337"
+        v-if="this.$store.state.ad_stat && this.option == 'Color Options'"
+        class="ma-7 py-2 px-10"
+        dark
+      >
+        <colorpanel />
+      </v-card>
+
+      <!-- <v-card width="337" v-if="this.$store.state.ad_stat && this.option == 'Timers'" class="mt-2 pt-3 px-10" dark> -->
+      <v-card
+        class="mt-3"
+        color="grey darken-3"
+        width="337"
+        v-if="this.$store.state.ad_stat && this.option == 'Timers'"
+      >
+        <v-time-picker
+          color="grey darken-3"
+          v-model="time"
+          :landscape="$vuetify.breakpoint.mdAndUp"
+          width="337"
+          type="month"
+        ></v-time-picker>
+        <!-- <v-btn width="168" color="green" @click="setStart">Set Start</v-btn> -->
+        <!-- <v-btn width="168" color="red">Set Stop</v-btn> -->
+        <v-btn width="337" color="red" @click="setTimer">Set Timer</v-btn>
+      </v-card>
+      <!-- </v-card> -->
     </v-row>
   </div>
 </template>
@@ -50,11 +103,7 @@ export default {
     colorpanel: () => import("@/components/color_panel.vue")
   },
   computed: {
-    ...mapGetters([
-      "ad_stat",
-      "locked",
-      'client'
-      ])
+    ...mapGetters(["ad_stat", "locked", "client"])
   },
   data: () => ({
     pass: undefined,
@@ -65,15 +114,30 @@ export default {
       pass: undefined
     },
     form: false,
-    tried_once: false
+    tried_once: false,
+    option: "Timers",
+    time: null
   }),
   methods: {
     ...mapActions(["cred_check", "log_out", "lock"]),
-    enter(){
+    enter() {
       // console.log('Hello')
     },
+    setStart() {
+      console.log(this.time);
+      var today = new Date();
+      var date = today.getHours() + ":" + today.getMinutes();
+      console.log(date);
+      var unix = Math.round(+new Date() / 1000);
+      console.log("unix " + unix); //WORK HERE THOOOOOOOOOOOOOOOOO
+    setTimer(){
+      var today = new Date
+      var now = Math.round(+new Date() / 1000);
+      var stop = today.toDateString();
+      console.log(stop)
+    },
     send() {
-      let msg = '1'
+      let msg = "1";
       this.$store.state.client.publish(this.topic, msg);
     },
     loggo() {
