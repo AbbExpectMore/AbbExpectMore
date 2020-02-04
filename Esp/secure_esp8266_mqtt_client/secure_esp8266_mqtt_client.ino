@@ -13,6 +13,7 @@ Använder https://github.com/tsi-software/Secure_ESP8266_MQTT_poc
 #define G 14 //D5
 #define R 12 //D6
 #define B 13 //D7
+#define knapp 15 // D8
 
 const int topic_count = 3;
 const char *topics[topic_count] = {"/ctrl", "/power", "/brightness"};
@@ -24,6 +25,7 @@ unsigned long time_now;
 int animationDelay = 50;
 int counter = 0;
 int numColors = 255;
+int rawe_delay = 150;
 
 //TODO: implement secure credintials as a runtime config file
 //      rather than a header file.
@@ -164,6 +166,7 @@ void setup()
   pinMode(G, OUTPUT);
   pinMode(R, OUTPUT);
   pinMode(B, OUTPUT);
+  pinmode(knapp, INPUT);
 
 #ifdef DEBUG
   Serial.begin(115200); // Start serial communication at 115200 baud
@@ -226,6 +229,11 @@ void loop()
     }
   }
 
+  if (digitalRead(knapp)){
+    last_color = {0, 0, 0};
+    change(0, 0, 0);
+  }
+
   // if (last_color == rainbow_color && (millis() > time_now + animationDelay))
   // {
   //   rainbow();
@@ -240,7 +248,7 @@ void rawe()
 {
   DEBUG_LOGLN("Doin the rawe");
   change(random(0, 255), random(0, 255), random(0, 255));
-  delay(100);
+  delay(rawe_delay);
 }
 
 void rainbow()
