@@ -7,10 +7,7 @@
 
       <v-row align="start" justify="space-around" no-gutters>
 
-      <!-- Actual app, all views and content -->
-      <!-- <v-btn :disabled=connected @click="connect()">Connect</v-btn>
-      <v-btn :disabled=subscribed @click="subscribe()">subscribe</v-btn>
-      <v-btn @click="send()">Send</v-btn> -->
+      
       <v-fade-transition mode="out-in">
         <router-view/>
       </v-fade-transition>

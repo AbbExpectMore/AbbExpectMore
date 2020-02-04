@@ -2,6 +2,7 @@
   <div id="test2">
     <v-row align="start" justify="space-around" no-gutters>
       <v-card v-if="!this.$store.state.ad_stat" class="ma-7" dark>
+        
         <v-form class="ma-5 pa-4" v-model="form">
           <v-text-field v-on:keyup.enter="login" dark v-model="creds.user" label="Username" required></v-text-field>
           <v-text-field v-on:keyup.enter="login" dark v-model="pass" label="Password" type="password" required></v-text-field>
