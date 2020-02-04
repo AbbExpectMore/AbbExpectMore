@@ -17,6 +17,16 @@ const store = new Vuex.Store({
       value: '',
       id: ''
     },
+    modes: [
+      {
+        name: 'Rainbow',
+        color: '(10,55,250)'
+      },
+      {
+        name: 'Rnd-Rave',
+        color: '(9,55,250)'
+      }
+    ],
     info: undefined,
     onOff: false,
     lk: {

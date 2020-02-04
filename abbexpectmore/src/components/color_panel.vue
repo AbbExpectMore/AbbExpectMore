@@ -82,7 +82,8 @@ export default {
           'connected',
           'onOff',
           'sends',
-          'loading'
+          'loading',
+          'modes'
       ])
   },
   data: () => ({

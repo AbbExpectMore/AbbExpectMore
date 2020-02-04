@@ -15,12 +15,14 @@
       <v-card dark class="ma-4 pb-3 grey darken-3 px-2">
         <h2 class="grey--text text--lighten-1 text-center">Last picked colors</h2>
         <v-row align="start" justify="space-around" no-gutters>
-          <v-btn 
-          fab 
-          v-for="(color, i) in all_vals" :key="i" 
-          class="ma-1" 
-          :color="all_vals[i]"
-          @click="send(all_vals[i])"></v-btn>
+          <v-btn
+            fab
+            v-for="(color, i) in all_vals"
+            :key="i"
+            class="ma-1"
+            :color="all_vals[i]"
+            @click="send(all_vals[i])"
+          ></v-btn>
         </v-row>
       </v-card>
     </v-row>
@@ -29,6 +31,7 @@
 
 <script>
 import axios from "axios";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   name: "Colors",
@@ -38,11 +41,14 @@ export default {
     loading: true,
     go: true
   }),
+  computed: {
+    ...mapGetters(["modes"])
+  },
   methods: {
     send(color) {
-      color = color.replace('rgb','')
-      this.$store.state.sends.value = color
-      this.$store.dispatch('postRGB')
+      color = color.replace("rgb", "");
+      this.$store.state.sends.value = color;
+      this.$store.dispatch("postRGB");
     },
     test() {
       axios
@@ -51,7 +57,7 @@ export default {
           var info = respons.data;
           info = info.reverse();
           for (let i = 0; i < info.length; i++) {
-            this.go = true
+            this.go = true;
             if (this.all_vals.length >= 10) {
               break;
             } else if (this.all_vals.length != 0) {
@@ -64,54 +70,45 @@ export default {
                 null;
               } else {
                 if (this.all_vals.length < 10) {
-                  this.all_vals.forEach(element => {
-                    if ('rgb' + info[i][0] == element){
+                  this.$store.state.modes.forEach(element => {
+                    if (info[i][0] == element.color) {
                       this.go = false;
                     }
                   });
-                  if (this.go){
+                  this.all_vals.forEach(element => {
+                    if ("rgb" + info[i][0] == element) {
+                      this.go = false;
+                    }
+                  });
+                  if (this.go) {
                     this.all_vals.push("rgb" + info[i][0]);
                   }
                 }
-                // console.log("rgb" + info[i][0]);
               }
             } else {
               let valu = info[i][0].replace("(", "");
               valu = valu.replace(")", "");
               let val = valu.split(",");
 
-              if (val[0] == val[1] && val[2]) {
-                null;
-              } else {
-                if (this.all_vals.length < 10) {
-                  this.all_vals.push("rgb" + info[i][0]);
+              this.$store.state.modes.forEach(element => {
+                if (info[i][0] == element.color) {
+                  this.go = false;
                 }
-                // console.log("rgb" + info[i][0]);
+              });
+              this.all_vals.forEach(element => {
+                if ("rgb" + info[i][0] == element) {
+                  this.go = false;
+                }
+              });
+              if (val[0] == val[1] && val[2]) {
+                this.go = false;
+              } 
+              if (this.go) {
+                this.all_vals.push("rgb" + info[i][0]);
               }
+              
             }
-            // else {
-            //   for (let j = 0; j <= this.all_vals.length; j++) {
-            //     if (info[i][0] == this.all_vals[j]) {
-            //       i += 1;
-            //       break;
-            //     } else {
-            //       let valu = info[i][0].replace("(", "");
-            //       valu = valu.replace(")", "");
-            //       let val = valu.split(",");
-
-            //       if (val[0] == val[1] && val[2]) {
-            //         null;
-            //       } else {
-            //         this.all_vals.push("rgb" + info[i][0]);
-            //         // console.log("rgb" + info[i][0]);
-            //       }
-            //     }
-            //   }
-            // }
           }
-          //     if (this.all_vals.length == 10){
-          //         break
-          //     }
 
           this.loading = false;
         });
