@@ -16,7 +16,7 @@
 
 
       <!-- Normal Screen (Connected)-->
-      <v-card min-width="337" v-if="!this.$store.state.locked" dark class="pa-4 ma-4 grey darken-3">
+      <v-card width="337" v-if="!this.$store.state.locked" dark class="pa-4 ma-4 grey darken-3">
         <colorpanel/>
       </v-card>
 

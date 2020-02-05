@@ -116,16 +116,19 @@ export default {
     return Math.round(low2 + (high2 - low2) * (value - low1) / (high1 - low1));
     },
     send1(){
+      this.$store.state.sends.method = 'ctrl'
       this.$store.state.loading = true
       this.$store.state.sends.value = '(10,55,250)'
       this.$store.dispatch('postRGB')
     },
     send2(){
+      this.$store.state.sends.method = 'ctrl'
       this.$store.state.loading = true
       this.$store.state.sends.value = '(9,55,250)'
       this.$store.dispatch('postRGB')
     },
     send() {
+      this.$store.state.sends.method = 'ctrl'
       this.$store.state.loading = true
       let bri = this.map(this.bright, 0, 100, 0, 255)
       let bro = `(${bri},${bri},${bri})`
@@ -135,6 +138,7 @@ export default {
       this.$store.dispatch('postRGB')
     },
     ono() {
+      this.$store.state.sends.method = 'ctrl'
       this.$store.state.loading = true
       this.$store.state.onOff = this.switch1
       if (this.switch1 == true) {

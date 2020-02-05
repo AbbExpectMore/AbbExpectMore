@@ -71,6 +71,7 @@ export default {
         })
     },
     yes(){
+      this.$store.state.sends.method = 'ctrl'
       this.$store.state.loading = true;
       this.check_lock()
       this.rgb = this.HSLToRGB(this.color.hue, this.color.saturation, this.color.luminosity)

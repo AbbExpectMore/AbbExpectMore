@@ -40,10 +40,16 @@
         <v-radio-group v-model="option">
           <v-radio label="Lock" value="Lock"></v-radio>
           <v-radio label="Color Options" value="Color Options"></v-radio>
-          <v-radio label="Timers" value="Timers"></v-radio>
+          <v-radio label="Timer" value="Timers"></v-radio>
+        <v-radio-group v-if="option == 'Timers'" color="white--text" v-model="optionTime">
+            <v-radio label="Timer" value="Timer"></v-radio>
+            <v-radio label="Set time" value="Set time"></v-radio>
+          </v-radio-group>
         </v-radio-group>
       </v-card>
+    </v-row>
 
+    <v-row align="start" justify="space-around" no-gutters>
       <v-card
         width="337"
         v-if="this.$store.state.ad_stat && this.option == 'Lock'"
@@ -70,16 +76,49 @@
       </v-card>
 
       <!-- <v-card width="337" v-if="this.$store.state.ad_stat && this.option == 'Timers'" class="mt-2 pt-3 px-10" dark> -->
+        <v-card
+        dark
+        class="mt-3"
+        color="grey darken-3"
+        width="337"
+        v-if="this.$store.state.ad_stat && this.option == 'Timers' && info && optionTime == 'Timer'">
+        <v-row align="start" justify="space-around" no-gutters>
+          <p class="ma-2">To set a timeout turn the clock dials to a the amount of time you want to wait (max 24h), then press 'Set Timer' and wait.</p>
+          <v-btn width="337" @click="info = false">
+            <v-icon>
+              mdi-close
+            </v-icon>
+          </v-btn>
+    </v-row>
+        </v-card>
+        <v-card
+        dark
+        class="mt-3"
+        color="grey darken-3"
+        width="337"
+        v-if="this.$store.state.ad_stat && this.option == 'Timers' && info1 && optionTime == 'Set time'">
+      <v-row align="start" justify="space-around" no-gutters>
+          <p class="ma-2">To set a time turn the clock dials to a the time you want it to turn off, then press 'Set Timer' and wait.</p>
+          <v-btn width="337" @click="info1 = false">
+            <v-icon>
+              mdi-close
+            </v-icon>
+          </v-btn>
+    </v-row>
+        </v-card>
+    </v-row>
+
+    <v-row align="start" justify="space-around" no-gutters>
       <v-card
         class="mt-3"
         color="grey darken-3"
         width="337"
-        v-if="this.$store.state.ad_stat && this.option == 'Timers'"
+        v-if="this.$store.state.ad_stat && this.option == 'Timers' && optionTime == 'Timer'"
       >
         <v-time-picker
+        format="24hr"
           color="grey darken-3"
           v-model="time"
-          :landscape="$vuetify.breakpoint.mdAndUp"
           width="337"
           type="month"
         ></v-time-picker>
@@ -87,7 +126,29 @@
         <!-- <v-btn width="168" color="red">Set Stop</v-btn> -->
         <v-btn width="337" color="red" @click="setTimer">Set Timer</v-btn>
       </v-card>
+
+
+      
+
+      <v-card
+        class="mt-3"
+        color="grey darken-3"
+        width="337"
+        v-if="this.$store.state.ad_stat && this.option == 'Timers' && optionTime == 'Set time'"
+      >
+        <v-time-picker
+        format="24hr"
+          color="grey darken-3"
+          v-model="time1"
+          width="337"
+        ></v-time-picker>
+        <!-- <v-btn width="168" color="green" @click="setStart">Set Start</v-btn> -->
+        <!-- <v-btn width="168" color="red">Set Stop</v-btn> -->
+        <v-btn width="337" color="red" @click="setTime">Set Time</v-btn>
+      </v-card>
+
       <!-- </v-card> -->
+
     </v-row>
   </div>
 </template>
@@ -103,7 +164,7 @@ export default {
     colorpanel: () => import("@/components/color_panel.vue")
   },
   computed: {
-    ...mapGetters(["ad_stat", "locked", "client"])
+    ...mapGetters(["ad_stat", "locked", "client", 'sends'])
   },
   data: () => ({
     pass: undefined,
@@ -115,11 +176,15 @@ export default {
     },
     form: false,
     tried_once: false,
-    option: "Timers",
-    time: null
+    option: "Lock",
+    optionTime: '',
+    time: '00:00',
+    time1: '00:00',
+    info: true,
+    info1: true,
   }),
   methods: {
-    ...mapActions(["cred_check", "log_out", "lock"]),
+    ...mapActions(["cred_check", "log_out", "lock", 'postRGB']),
     enter() {
       // console.log('Hello')
     },
@@ -130,11 +195,29 @@ export default {
       console.log(date);
       var unix = Math.round(+new Date() / 1000);
       console.log("unix " + unix); //WORK HERE THOOOOOOOOOOOOOOOOO
+    },
     setTimer(){
+      this.$store.state.sends.method = 'timeout'
       var today = new Date
       var now = Math.round(+new Date() / 1000);
-      var stop = today.toDateString();
-      console.log(stop)
+      var timer = this.time.split(':')
+      var stop = Math.round(+new Date()/1000) + timer[0]*3600 + timer[1]*60;
+      stop = stop - now;
+      this.$store.state.sends.value = stop.toString();
+      this.$store.dispatch('postRGB')
+    },
+    setTime(){
+      this.$store.state.sends.method = 'timeout'
+      var now = new Date;
+      var unixNow = Math.round(+new Date() / 1000);
+      var timeSplit = this.time1.split(':');
+      var unixThen = Math.round(+new Date(now.getFullYear(), now.getMonth(), now.getDate(),timeSplit[0],timeSplit[1],0) /1000);
+      if(unixNow > unixThen){
+        unixThen = Math.round(+new Date(now.getFullYear(), now.getMonth(), now.getDate()+1,timeSplit[0],timeSplit[1],0) /1000);
+      }
+      var unixSend = unixThen - unixNow;
+      this.$store.state.sends.value = unixSend.toString();
+      this.$store.dispatch('postRGB')
     },
     send() {
       let msg = "1";
