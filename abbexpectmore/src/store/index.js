@@ -38,6 +38,8 @@ const store = new Vuex.Store({
     loading: false,
     tried_once: false,
     last_val: 0,
+    res: null,
+    snackbar: false,
     // client: null
   },
   getters: {
@@ -93,7 +95,9 @@ const store = new Vuex.Store({
       .then(respons => {
         state.info = respons.data
         state.loading = false
-        // console.log(state.info.Meddelande)
+        // if(state.sends.method == 'timeout'){
+        //   state.res = state.info.Meddelande
+        // }
         if (state.info.Meddelande == 'låst!'){
           axios
             .get('https://4f4owrwgp2.execute-api.us-east-1.amazonaws.com/v1/')
@@ -156,6 +160,9 @@ const store = new Vuex.Store({
     locked: (context) => {
       context.commit('locked')
     },
+    snackbar:(context) => {
+      
+    }
   }
 })
 

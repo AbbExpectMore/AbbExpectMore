@@ -81,10 +81,10 @@
         class="mt-3"
         color="grey darken-3"
         width="337"
-        v-if="this.$store.state.ad_stat && this.option == 'Timers' && info && optionTime == 'Timer'">
+        v-if="this.$store.state.ad_stat && this.option == 'Timers' && info2 && optionTime == 'Timer'">
         <v-row align="start" justify="space-around" no-gutters>
           <p class="ma-2">To set a timeout turn the clock dials to a the amount of time you want to wait (max 24h), then press 'Set Timer' and wait.</p>
-          <v-btn width="337" @click="info = false">
+          <v-btn width="337" @click="info2 = false">
             <v-icon>
               mdi-close
             </v-icon>
@@ -98,7 +98,7 @@
         width="337"
         v-if="this.$store.state.ad_stat && this.option == 'Timers' && info1 && optionTime == 'Set time'">
       <v-row align="start" justify="space-around" no-gutters>
-          <p class="ma-2">To set a time turn the clock dials to a the time you want it to turn off, then press 'Set Timer' and wait.</p>
+          <p class="ma-2">To set a time turn the clock dials to a the time you want it to turn off, then press 'Set Time' and wait.</p>
           <v-btn width="337" @click="info1 = false">
             <v-icon>
               mdi-close
@@ -147,6 +147,10 @@
         <v-btn width="337" color="red" @click="setTime">Set Time</v-btn>
       </v-card>
 
+      <v-snackbar :color="color" v-model="snackbar" :timeout='timeout'>
+        {{mess}}
+      </v-snackbar>
+
       <!-- </v-card> -->
 
     </v-row>
@@ -164,7 +168,7 @@ export default {
     colorpanel: () => import("@/components/color_panel.vue")
   },
   computed: {
-    ...mapGetters(["ad_stat", "locked", "client", 'sends'])
+    ...mapGetters(["ad_stat", "locked", "client", 'sends', 'res', 'info'])
   },
   data: () => ({
     pass: undefined,
@@ -180,13 +184,28 @@ export default {
     optionTime: '',
     time: '00:00',
     time1: '00:00',
-    info: true,
     info1: true,
+    info2: true,
+    snackbar: false,
+    mess: 'Ops?',
+    color: 'grey',
+    timeout: 3000,
   }),
   methods: {
     ...mapActions(["cred_check", "log_out", "lock", 'postRGB']),
     enter() {
       // console.log('Hello')
+    },
+    snack(){
+      setTimeout(() => {
+        this.mess = this.$store.state.info.Meddelande;
+        if (this.mess == 'Lyckades!'){
+          this.color="green"
+        }else{
+          this.mess = "red"
+        }
+        this.snackbar = true;
+      }, 1000)
     },
     setStart() {
       console.log(this.time);
@@ -205,6 +224,7 @@ export default {
       stop = stop - now;
       this.$store.state.sends.value = stop.toString();
       this.$store.dispatch('postRGB')
+      this.snack()
     },
     setTime(){
       this.$store.state.sends.method = 'timeout'
@@ -218,6 +238,7 @@ export default {
       var unixSend = unixThen - unixNow;
       this.$store.state.sends.value = unixSend.toString();
       this.$store.dispatch('postRGB')
+      this.snack()
     },
     send() {
       let msg = "1";
