@@ -11,6 +11,7 @@
       <v-fade-transition mode="out-in">
         <router-view/>
       </v-fade-transition>
+        <snackbar/>
       </v-row>
 
     </v-content>
@@ -26,6 +27,7 @@ var mqtt = require('mqtt'),
 export default {
   components: {
     toolbar: () => import("./components/toolbar.vue"),
+    snackbar: () => import("./components/snackbar.vue"),
   },
   data: () => ({
     color: {

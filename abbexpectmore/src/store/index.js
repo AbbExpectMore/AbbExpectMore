@@ -39,7 +39,9 @@ const store = new Vuex.Store({
     tried_once: false,
     last_val: 0,
     res: null,
-    snackbar: false,
+    snackShow: false,
+    snackMessage: 'Oops?',
+    snackColor: 'grey'
     // client: null
   },
   getters: {
@@ -95,9 +97,15 @@ const store = new Vuex.Store({
       .then(respons => {
         state.info = respons.data
         state.loading = false
-        // if(state.sends.method == 'timeout'){
-        //   state.res = state.info.Meddelande
-        // }
+        state.snackShow = true;
+        if (state.info.Meddelande == 'Lyckades!'){
+          state.snackMessage = 'Success!'
+          state.snackColor = 'green'
+        }else{
+          state.snackMessage = 'Failed!'
+          state.snackColor = 'red'
+        }
+        console.log('Yes')
         if (state.info.Meddelande == 'låst!'){
           axios
             .get('https://4f4owrwgp2.execute-api.us-east-1.amazonaws.com/v1/')
@@ -160,9 +168,6 @@ const store = new Vuex.Store({
     locked: (context) => {
       context.commit('locked')
     },
-    snackbar:(context) => {
-      
-    }
   }
 })
 

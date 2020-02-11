@@ -146,11 +146,6 @@
         <!-- <v-btn width="168" color="red">Set Stop</v-btn> -->
         <v-btn width="337" color="red" @click="setTime">Set Time</v-btn>
       </v-card>
-
-      <v-snackbar :color="color" v-model="snackbar" :timeout='timeout'>
-        {{mess}}
-      </v-snackbar>
-
       <!-- </v-card> -->
 
     </v-row>
@@ -186,7 +181,6 @@ export default {
     time1: '00:00',
     info1: true,
     info2: true,
-    snackbar: false,
     mess: 'Ops?',
     color: 'grey',
     timeout: 3000,
@@ -195,17 +189,6 @@ export default {
     ...mapActions(["cred_check", "log_out", "lock", 'postRGB']),
     enter() {
       // console.log('Hello')
-    },
-    snack(){
-      setTimeout(() => {
-        this.mess = this.$store.state.info.Meddelande;
-        if (this.mess == 'Lyckades!'){
-          this.color="green"
-        }else{
-          this.mess = "red"
-        }
-        this.snackbar = true;
-      }, 1000)
     },
     setStart() {
       console.log(this.time);
@@ -224,7 +207,6 @@ export default {
       stop = stop - now;
       this.$store.state.sends.value = stop.toString();
       this.$store.dispatch('postRGB')
-      this.snack()
     },
     setTime(){
       this.$store.state.sends.method = 'timeout'
@@ -238,7 +220,6 @@ export default {
       var unixSend = unixThen - unixNow;
       this.$store.state.sends.value = unixSend.toString();
       this.$store.dispatch('postRGB')
-      this.snack()
     },
     send() {
       let msg = "1";
