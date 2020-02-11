@@ -6,8 +6,6 @@
 <!-- 10,55,250 -->
 
       <v-row align="start" justify="space-around" no-gutters>
-
-      
       <v-fade-transition mode="out-in">
         <router-view/>
       </v-fade-transition>

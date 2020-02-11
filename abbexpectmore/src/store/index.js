@@ -45,27 +45,18 @@ const store = new Vuex.Store({
     // client: null
   },
   getters: {
-    saleProducts: state => {
-      var saleProducts = state.products.map(product => {
-        return {
-          name: product.name,
-          price: product.price / 2
-        }
-      })
-      return saleProducts
-    },
     ad_stat: state => {
       var status = state.ad_stat
       return status
     }
   },
   mutations: {
+    // Check login credentials
     cred_check: (state, payload) => {
       axios
         .put('https://ec4avk1xoh.execute-api.us-east-1.amazonaws.com/v1/', payload)
         .then(respons => {
           state.info = respons.data
-          // console.log(state.info.success)
           state.loading = false
           state.tried_once = true
           if (state.info.success) {
@@ -74,18 +65,17 @@ const store = new Vuex.Store({
           }
         })
     },
+    // Check if main page is locked
     check_lock(){
       axios
         .get('https://4f4owrwgp2.execute-api.us-east-1.amazonaws.com/v1/')
         .then(respons => {
           var info = respons.data
           this.$store.state.locked = info.locked
-          // console.log(info.locked)
         })
     },
+    // Post everything to aws
     postRGB: (state) => {
-      // state.rgb = 'rgb' + String(state.sends.value)
-      // console.log(state.sends)
       if (state.ad_stat == true) {
         state.sends.id = state.lk.id
       } else {
@@ -112,13 +102,11 @@ const store = new Vuex.Store({
             .then(respons => {
               var info = respons.data
               state.locked = info.locked
-              // console.log(info.locked)
           })
         }
       })
     },
     locked: (state) => {
-      // console.log('Hello')
     },
     log_out: (state) => {
       state.ad_stat = false
@@ -135,17 +123,14 @@ const store = new Vuex.Store({
           .post('https://4f4owrwgp2.execute-api.us-east-1.amazonaws.com/v1', JSON.stringify(state.lk))
           .then(respons => {
             state.info = respons.data
-            // console.log(state.info)
           })
         state.locked = false
       } else {
-        // console.log('locked')
         state.lk.value = true
         axios
           .post('https://4f4owrwgp2.execute-api.us-east-1.amazonaws.com/v1', JSON.stringify(state.lk))
           .then(respons => {
             state.info = respons.data
-            // console.log(state.info)
           })
         state.locked = true
       }
