@@ -29,6 +29,7 @@ int counter = 0;
 int numColors = 255;
 int rawe_delay = 150;
 bool dotimeout = false;
+bool startup = true;
 
 //TODO: implement secure credintials as a runtime config file
 //      rather than a header file.
@@ -114,6 +115,8 @@ void callback(char *topic, byte *payload, unsigned int length)
 // Reconnect to the MQTT client.
 void reconnectToMQTT(MilliSec currentMilliSec)
 {
+  
+  
   if (pubsubClient.connected())
   {
     // We are connected so nothing further needs to be done.
@@ -139,6 +142,12 @@ void reconnectToMQTT(MilliSec currentMilliSec)
       DEBUG_LOGLN(topics[i]);
       pubsubClient.subscribe(topics[i]);
     }
+    
+    change(0, 255, 0);
+
+    delay(200);
+
+    change(0, 0, 0);
 
     // pubsubClient.subscribe(TOPIC_ZONE_OFF.c_str());
     // DEBUG_LOG("Subcribed to: ");
@@ -167,8 +176,10 @@ void setup()
   Serial.begin(115200); // Start serial communication at 115200 baud
 #endif
 
+  change(255, 0, 0); // Visuell stat<us
+
   setupWifi.setupWifi();
-  //pubsubClient.setServer(broker, 1883);
+      //pubsubClient.setServer(broker, 1883);
   pubsubClient.setServer(mqtt_server, 8883);
   pubsubClient.setCallback(callback); // Initialize the callback routine
   time_now = millis();
