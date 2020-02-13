@@ -9,8 +9,7 @@
       <v-slider color="#f3952d" v-model="color.saturation"></v-slider>
     </v-row>
     
-    <p>Use the color wheel to pick a color and then
-      use the sliders to chose saturation and luminosity.</p>
+    <p>Use the color wheel to pick a color and the sliders to choose saturation and luminosity.</p>
 
     <v-row align="start" justify="space-around">
       <v-btn 
