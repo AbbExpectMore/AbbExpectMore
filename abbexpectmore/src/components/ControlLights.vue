@@ -10,7 +10,7 @@
           
           <h1 v-on="on">This page is locked</h1>
         </template>
-        <span>To unlock disable "Admin Control" under Admin (must be signed in)</span>
+        <span>To unlock, disable "Admin Control" under Admin (must be signed in)</span>
       </v-tooltip>
       </v-card>
 

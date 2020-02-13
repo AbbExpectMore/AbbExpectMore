@@ -92,7 +92,7 @@
         <v-row align="start" justify="space-around" no-gutters>
           <p
             class="ma-2"
-          >To set a timeout turn the clock dials to a the amount of time you want to wait (max 24h), then press 'Set Timer' and wait.</p>
+          >Set a timeout: turn the clock dials to a the amount of time you want to wait (max 24h), then press 'Set Timer' and wait.</p>
           <v-btn width="337" @click="info2 = false">
             <v-icon>mdi-close</v-icon>
           </v-btn>
@@ -108,7 +108,7 @@
         <v-row align="start" justify="space-around" no-gutters>
           <p
             class="ma-2"
-          >To set a time turn the clock dials to a the time you want it to turn off, then press 'Set Time' and wait.</p>
+          >Set a time to turn off: turn the clock dials to a the time you want it to turn off, then press 'Set Time' and wait.</p>
           <v-btn width="337" @click="info1 = false">
             <v-icon>mdi-close</v-icon>
           </v-btn>
