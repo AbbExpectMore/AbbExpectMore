@@ -88,6 +88,7 @@ const store = new Vuex.Store({
         state.info = respons.data
         state.loading = false
         state.snackShow = true;
+        //Trigger snackbar
         if (state.info.Meddelande == 'Lyckades!'){
           state.snackMessage = 'Success!'
           state.snackColor = 'green'
@@ -96,6 +97,7 @@ const store = new Vuex.Store({
           state.snackColor = 'red'
         }
         console.log('Yes')
+        // If page is locked
         if (state.info.Meddelande == 'låst!'){
           axios
             .get('https://4f4owrwgp2.execute-api.us-east-1.amazonaws.com/v1/')
@@ -106,8 +108,6 @@ const store = new Vuex.Store({
         }
       })
     },
-    locked: (state) => {
-    },
     log_out: (state) => {
       state.ad_stat = false
       state.creds = {
@@ -116,6 +116,7 @@ const store = new Vuex.Store({
       }
       state.tried_once = false
     },
+    //Lock the main page
     lock: (state) => {
       if (state.locked) {
         state.lk.value = false
@@ -137,6 +138,7 @@ const store = new Vuex.Store({
     },
   },
   //Actions to async
+  //Actions that trigger mutations to allow for better trace back on error
   actions: {
     cred_check: (context, payload) => {
       context.commit('cred_check', payload)
@@ -149,10 +151,7 @@ const store = new Vuex.Store({
     },
     lock: (context) => {
       context.commit('lock')
-    },
-    locked: (context) => {
-      context.commit('locked')
-    },
+    }
   }
 })
 

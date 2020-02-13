@@ -1,5 +1,5 @@
 <template>
-    <!-- Snackbar for user response -->
+    <!-- Vuetify snackbar for user response -->
   <div>
     <v-row align="start" justify="space-around" no-gutters>
       <v-snackbar width='200' :color="$store.state.snackColor" v-model="$store.state.snackShow" :timeout='timeout'>

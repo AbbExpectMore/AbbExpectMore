@@ -1,14 +1,15 @@
 <template >
   <v-app id="background">
+    <!-- Rendering toolbar -->
     <toolbar />
     <v-content>
-      <!-- rainbow mode -->
-<!-- 10,55,250 -->
 
       <v-row align="start" justify="space-around" no-gutters>
       <v-fade-transition mode="out-in">
+        <!-- Triggering router view -->
         <router-view/>
       </v-fade-transition>
+      <!-- Running snackbar comp -->
         <snackbar/>
       </v-row>
 
@@ -28,22 +29,13 @@ export default {
     snackbar: () => import("./components/snackbar.vue"),
   },
   data: () => ({
+    //Color wheel vairables
     color: {
       hue: 50,
       saturation: 100,
       luminosity: 50,
       alpha: 1
     },
-    connected: false,
-    client: undefined,
-    user: "abbexpectmore@gmail.com",
-    pass: "Hej",
-    message: true,
-    once: false,
-    topic: 'abbexpectmore@gmail.com/lock',
-    topic1: 'abbexpectmore@gmail.com/l',
-    last_payload: false,
-    subscribed: false
   }),
   computed: {
     ...mapGetters([
@@ -55,92 +47,39 @@ export default {
   },
   created(){
     this.check();
-    // this.connect()
-    // this.subscribe()
+    //Interval for regualrly checking if page has been locked
     setInterval(() => {
       this.check()
     }, 2000)
   },
+  //Check if locked whenever page is reloaded
   updated(){
     axios
       .get('https://4f4owrwgp2.execute-api.us-east-1.amazonaws.com/v1/')
       .then(respons => {
         var info = respons.data
         this.$store.state.locked = info.locked
-        // console.log(info.locked)
       })
   },
   mounted(){
     
     },
   methods: {
-    send() {
-      let msg = String(this.message)
-      this.client.publish(this.topic, msg);
-      this.last_payload = msg
-      this.message = !this.message
-    },
-    subscribe(){
-      this.client.subscribe(this.topic, function(err, granted){
-        console.log(granted)
-      })
-      this.subscribed = true
-    },
-    con_sub(){
-      
-    },
-    // ...mapActions([
-    //   'locked',
-    // ]),
-    connect() {
-      var mqtt_url = "maqiatto.com";
-      var url = "mqtt://" + mqtt_url;
-      var options = {
-        port: 8883,
-        clientId:
-          "mqttjs_" +
-          Math.random()
-            .toString(16)
-            .substr(2, 8),
-        username: this.user,
-        password: this.pass
-      };
-      // user = this.options.username
-      // pass = this.options.password
-      console.log("connecting");
-      this.client = mqtt.connect(url, options);
-      console.log("connected?");
-      this.client
-        .on("error", function(error) {
-          console.log("no");
-          this.Alert = true;
-          this.connected = false;
-          console.log(this.Alert, this.connected);
-        })
-        .on("close", function(error) {
-          console.log("no");
-          this.Alert = true;
-          this.connected = false;
-        });
-      this.$store.state.client = this.client
-      this.connected = true;
-    },
+    //Check if page is locked
     check(){
       axios
       .get('https://4f4owrwgp2.execute-api.us-east-1.amazonaws.com/v1/')
       .then(respons => {
         var info = respons.data
         this.$store.state.locked = info.locked
-        // console.log(info.locked)
         this.$store.state.last_val = info.Last_val
-        if (!this.once){
           if (this.$store.state.last_val == '(0,0,0)'){
             this.$store.state.onOff = false
           }else{
             this.$store.state.onOff = true
           }
           this.once = true
-        }
+        
       })
     }
   }

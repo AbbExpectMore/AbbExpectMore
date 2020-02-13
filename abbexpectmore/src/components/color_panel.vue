@@ -19,7 +19,7 @@
               :loading="this.$store.state.loading"
             ></v-switch>
           </v-row>
-
+        <!-- Modes -->
           <v-row align="start" justify="space-around" no-gutters v-if="mode == 'Modes'">
             <v-btn
             fab
@@ -37,6 +37,7 @@
             </v-btn>
           </v-row>
 
+          <!-- Brightness -->
           <v-row align="start" justify="space-around" no-gutters v-if="mode == 'Brightness'">
               <v-slider 
               color="#f3952d"
@@ -89,13 +90,6 @@ export default {
   data: () => ({
     bright: 0,
     counter: 0,
-    client: undefined,
-    user: "abbexpectmore@gmail.com",
-    pass: "ABBExpectMore2020",
-    message: "",
-    Alert: false,
-    Alert_type: "warning",
-    Alert_text: "Could not connect to broker :((",
     value: undefined,
     mode: 'Color Wheel',
     switch1: false,
