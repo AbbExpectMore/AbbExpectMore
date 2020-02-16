@@ -31,7 +31,7 @@
 
 <script>
 import axios from "axios";
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters } from "vuex";
 
 export default {
   name: "Colors",
@@ -61,7 +61,6 @@ export default {
             if (this.all_vals.length >= 10) {
               break;
             } else if (this.all_vals.length != 0) {
-              let compare = "rgb" + info[i][0];
 
               let valu = info[i][0].replace("(", "");
               valu = valu.replace(")", "");

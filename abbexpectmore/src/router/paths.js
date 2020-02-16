@@ -21,10 +21,5 @@ export default [{
     name: 'Colors',
     view: 'Colors',
     //   component: () => import(/* webpackChunkName: "about" */ '../views/GetAnswer.vue')
-  },
-  {
-    path: '/settings',
-    name: 'Settings',
-    view: 'Settings'
   }
 ];

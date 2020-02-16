@@ -96,7 +96,6 @@ const store = new Vuex.Store({
           state.snackMessage = 'Failed!'
           state.snackColor = 'red'
         }
-        console.log('Yes')
         // If page is locked
         if (state.info.Meddelande == 'låst!'){
           axios

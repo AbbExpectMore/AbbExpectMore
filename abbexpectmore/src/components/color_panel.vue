@@ -66,12 +66,8 @@
 // import ColorPicker from "vue-color-picker-wheel";
 import { mapGetters } from "vuex";
 import { mapActions } from "vuex";
-import axios from 'axios';
 import ColorPicker from '@/components/ColorPicker.vue'
-import { stringify } from 'querystring';
 
-var mqtt = require("mqtt"),
-  url = require("url");
 export default {
   name: "colorpanel",
   components: {

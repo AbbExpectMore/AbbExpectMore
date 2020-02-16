@@ -54,9 +54,6 @@ export default {
       'postRGB',
       'log_out'
     ]),
-    colorwell(){
-      // console.log('test')
-    },
     onInput(hue){
       this.color.hue = hue;
     },

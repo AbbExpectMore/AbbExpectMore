@@ -1,15 +1,5 @@
 <template>
   <v-row align="start" justify="space-around" no-gutters>
-    <!-- <v-progress-circular
-        :indeterminate="true"
-        :rotate="0"
-        :size="180"
-        :value="0"
-        :width="10"
-        color="light-blue"
-        class ="ma-12"
-      ></v-progress-circular> -->
-      
       <Colors/>
   </v-row>
 </template>

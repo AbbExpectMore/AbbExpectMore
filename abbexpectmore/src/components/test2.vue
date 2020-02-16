@@ -144,7 +144,6 @@
 import { mapGetters } from "vuex";
 import { mapActions } from "vuex";
 import sha256 from "sha256";
-import axios from "axios";
 
 export default {
   components: {
@@ -178,17 +177,8 @@ export default {
     enter() {
       // console.log('Hello')
     },
-    setStart() {
-      console.log(this.time);
-      var today = new Date();
-      var date = today.getHours() + ":" + today.getMinutes();
-      console.log(date);
-      var unix = Math.round(+new Date() / 1000);
-      console.log("unix " + unix); //WORK HERE THOOOOOOOOOOOOOOOOO
-    },
     setTimer() {
       this.$store.state.sends.method = "timeout";
-      var today = new Date();
       var now = Math.round(+new Date() / 1000);
       var timer = this.time.split(":");
       var stop =

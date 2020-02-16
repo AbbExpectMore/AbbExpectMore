@@ -25,12 +25,7 @@
 </template>
 
 <script>
-import ColorPicker from "vue-color-picker-wheel";
 import { mapGetters } from "vuex";
-import axios from 'axios';
-
-var mqtt = require("mqtt"),
-  url = require("url");
 
 export default {
   name: "ControlLights",
@@ -57,24 +52,7 @@ export default {
       value: "on",
       pass: "okokokok"
     }
-  }),
-  methods: {
-   
-  },
-  created(){
-  }
-  // https://cors-anywhere.herokuapp.com/
-  // mounted(){
-  //   console.log(this.data)
-     
-  //   axios
-  //     .post('https://4f4owrwgp2.execute-api.us-east-1.amazonaws.com/v1/change', JSON.stringify(this.data))
-  //     .then(respons => {
-  //       this.info = respons.data
-  //       console.log(this.info)
-  //     })
-  //   console.log('Body: '+JSON.stringify(this.data))
-  // }
+  })
 };
 </script>
 
