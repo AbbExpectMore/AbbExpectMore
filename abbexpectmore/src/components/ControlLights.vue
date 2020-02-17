@@ -1,15 +1,22 @@
 <template>
-  <v-row align="start" justify="space-around" no-gutters>
+  <v-row  align="start" justify="space-around" no-gutters>
     <v-col cols="auto">
 
 
       <!-- Page locked -->
-      <v-card v-if="this.$store.state.locked" dark class="ma-4 grey darken-3">
-        <h1>This paged is locked</h1>
+      <v-card v-if="this.$store.state.locked" dark class="ma-4 grey darken-3 px-2">
+      <v-tooltip bottom>
+        <template v-slot:activator="{ on }">
+          
+          <h1 v-on="on">This page is locked</h1>
+        </template>
+        <span>To unlock, disable "Admin Control" under Admin (must be signed in)</span>
+      </v-tooltip>
       </v-card>
 
-      <!-- Normal Screen (C<onnected)-->
-      <v-card v-if="!this.$store.state.locked" dark class="pa-4 ma-4 grey darken-3">
+
+      <!-- Normal Screen (Connected)-->
+      <v-card width="337" v-if="!this.$store.state.locked" dark class="pa-4 ma-4 grey darken-3">
         <colorpanel/>
       </v-card>
 
@@ -18,12 +25,7 @@
 </template>
 
 <script>
-import ColorPicker from "vue-color-picker-wheel";
 import { mapGetters } from "vuex";
-import axios from 'axios';
-
-var mqtt = require("mqtt"),
-  url = require("url");
 
 export default {
   name: "ControlLights",
@@ -50,24 +52,7 @@ export default {
       value: "on",
       pass: "okokokok"
     }
-  }),
-  methods: {
-   
-  },
-  created(){
-  }
-  // https://cors-anywhere.herokuapp.com/
-  // mounted(){
-  //   console.log(this.data)
-     
-  //   axios
-  //     .post('https://4f4owrwgp2.execute-api.us-east-1.amazonaws.com/v1/change', JSON.stringify(this.data))
-  //     .then(respons => {
-  //       this.info = respons.data
-  //       console.log(this.info)
-  //     })
-  //   console.log('Body: '+JSON.stringify(this.data))
-  // }
+  })
 };
 </script>
 

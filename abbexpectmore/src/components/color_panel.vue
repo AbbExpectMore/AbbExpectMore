@@ -1,16 +1,14 @@
 <template>
-  <v-row align="start" justify="space-around" no-gutters>
+  <!-- <v-row align="start" justify="space-around" no-gutters> -->
     <v-col cols="auto">
-      <!-- <v-flex xs12> -->
-
       <!-- Normal Screen -->
 
           <v-radio-group dark v-model="mode" :mandatory="false">
             <v-radio label="On/Off" value="On/Off"></v-radio>
             <v-radio label="Color Wheel" value="Color Wheel"></v-radio>
             <v-radio label="Brightness" value="Brightness"></v-radio>
+            <v-radio label="Modes" value="Modes"></v-radio>
           </v-radio-group>
-          <!-- <v-text-field v-if="mode == 'On/Off'" dark v-model="message" label="Message" required></v-text-field> -->
           <v-row align="start" justify="space-around" no-gutters>
             <v-switch
               color="#f3952d"
@@ -18,131 +16,132 @@
               v-model="switch1"
               style="transform: scale(1.75)"
               @change="ono()"
+              :loading="this.$store.state.loading"
             ></v-switch>
           </v-row>
+        <!-- Modes -->
+          <v-row align="start" justify="space-around" no-gutters v-if="mode == 'Modes'">
+            <v-btn
+            fab
+            @click="send1()"
+            class="ma-2">
+              Rainbow
+            </v-btn>
+            <v-btn
+            class="ma-2"
+            fab
+            @click="send2()">
+              <v-icon>
+                mdi-radioactive
+              </v-icon>
+            </v-btn>
+          </v-row>
 
+          <!-- Brightness -->
           <v-row align="start" justify="space-around" no-gutters v-if="mode == 'Brightness'">
-              <v-slider color="#f3952d" v-model="bright"></v-slider>
+              <v-slider 
+              color="#f3952d"
+              :label='this.bright  + "%"'
+              inverse-label
+              v-model="bright">
+              </v-slider>
           </v-row>
           <v-row align="start" justify="space-around" no-gutters v-if="mode == 'Brightness'">
-          <v-btn @click="send()">
-            Update
+          <v-btn 
+          @click="send()"
+          :loading="this.$store.state.loading"
+          >Update
           </v-btn>
           </v-row>
-
-          <v-row align="start" justify="space-around" no-gutters>
-            <color-picker v-model="color" v-if="mode == 'Color Wheel'"></color-picker>
+          <v-row v-if="mode == 'Color Wheel'" align="start" justify="space-around" no-gutters>
+            <ColorPicker />
           </v-row>
-          <p dark v-if="mode == 'Color Wheel'">
-            Color:
-            <input v-model="color" type="text" />
-          </p>
-          <v-row align="start" justify="space-around" no-gutters>
-            <v-btn
-              v-if="mode == 'Color Wheel'"
-              dark
-              @click="uValue()"
-              style="transform: scale(1.25)"
-            >Update</v-btn>
-          </v-row>
-
           <v-alert :type="Alert_type" v-if="Alert">{{ Alert_text }}</v-alert>
       <!-- </v-flex> -->
     </v-col>
-  </v-row>
+  <!-- </v-row> -->
 </template>
 
 <script>
-import ColorPicker from "vue-color-picker-wheel";
+// import ColorPicker from "vue-color-picker-wheel";
 import { mapGetters } from "vuex";
-import axios from 'axios';
+import { mapActions } from "vuex";
+import ColorPicker from '@/components/ColorPicker.vue'
 
-var mqtt = require("mqtt"),
-  url = require("url");
 export default {
   name: "colorpanel",
   components: {
-    ColorPicker
+    ColorPicker,
   },
   computed: {
       ...mapGetters([
           'locked',
-          'connected'
+          'connected',
+          'onOff',
+          'sends',
+          'loading',
+          'modes'
       ])
   },
   data: () => ({
-    bright: undefined,
+    bright: 0,
     counter: 0,
-    client: undefined,
-    user: "abbexpectmore@gmail.com",
-    pass: "ABBExpectMore2020",
-    message: "",
-    Alert: false,
-    Alert_type: "warning",
-    Alert_text: "Could not connect to broker :((",
     value: undefined,
-    mode: undefined,
+    mode: 'Color Wheel',
     switch1: false,
     ch: 0,
     color: undefined,
     colorRgb: undefined,
     ah: {
       method: undefined, //brightness
-      value: undefined,
-      pass: 'okokokok'
-    }
+      value: undefined
+    },
+    inv: true,
   }),
   methods: {
+    ...mapActions([
+      'postRGB'
+    ]),
+    map(value, low1, high1, low2, high2) {
+    return Math.round(low2 + (high2 - low2) * (value - low1) / (high1 - low1));
+    },
+    send1(){
+      this.$store.state.sends.method = 'ctrl'
+      this.$store.state.loading = true
+      this.$store.state.sends.value = '(10,55,250)'
+      this.$store.dispatch('postRGB')
+    },
+    send2(){
+      this.$store.state.sends.method = 'ctrl'
+      this.$store.state.loading = true
+      this.$store.state.sends.value = '(9,55,250)'
+      this.$store.dispatch('postRGB')
+    },
     send() {
-      this.ah.method = 'brightness'
-      console.log(this.bright)
-      this.ah.value = this.bright
-      console.log(this.ah.value)
-      axios
-        .post('https://4f4owrwgp2.execute-api.us-east-1.amazonaws.com/v1/change', JSON.stringify(this.ah))
-        .then(respons => {
-          this.info = respons.data
-          console.log(this.info)
-        })
+      this.$store.state.sends.method = 'ctrl'
+      this.$store.state.loading = true
+      let bri = this.map(this.bright, 0, 100, 0, 255)
+      let bro = `(${bri},${bri},${bri})`
+      // console.log(bro)
+      this.$store.state.sends.value = bro
+      // console.log(this.$store.state.sends.value)
+      this.$store.dispatch('postRGB')
     },
     ono() {
-      this.ah.method = 'power'
+      this.$store.state.sends.method = 'ctrl'
+      this.$store.state.loading = true
+      this.$store.state.onOff = this.switch1
       if (this.switch1 == true) {
-        this.ah.value = 'on'
-        axios
-        .post('https://4f4owrwgp2.execute-api.us-east-1.amazonaws.com/v1/change', JSON.stringify(this.ah))
-        .then(respons => {
-          this.info = respons.data
-          console.log(this.info)
-        })
+        this.$store.state.sends.value = '(255,255,255)'
+        this.$store.dispatch('postRGB')
       } else {
-        this.ah.value = 'off'
-        axios
-        .post('https://4f4owrwgp2.execute-api.us-east-1.amazonaws.com/v1/change', JSON.stringify(this.ah))
-        .then(respons => {
-          this.info = respons.data
-          console.log(this.info)
-        })
+        this.$store.state.sends.value = '(0,0,0)'
+        this.$store.dispatch('postRGB')
       }
-    },
-    hex2rgb(hex) {
-      var h = hex.replace("#", "");
-      h = h.match(new RegExp("(.{" + h.length / 3 + "})", "g"));
-      for (var i = 0; i < h.length; i++)
-        h[i] = parseInt(h[i].length == 1 ? h[i] + h[i] : h[i], 16);
-      return "(" + h.join(",") + ")";
-    },
-    uValue() {
-      this.value1 = this.hex2rgb(this.color);
-      this.ah.method = 'ctrl'
-      this.ah.value = this.value1
-      axios
-        .post('https://4f4owrwgp2.execute-api.us-east-1.amazonaws.com/v1/change', JSON.stringify(this.ah))
-        .then(respons => {
-          this.info = respons.data
-          console.log(this.info)
-        })
     }
+  },
+  mounted(){
+    this.switch1 = this.$store.state.onOff
   }
 };
 </script>
@@ -153,19 +152,3 @@ export default {
   font-size: 20px;
 }
 </style>
-
-    // on: {
-    //   method: 'power',
-    //   value: 'on',
-    //   pass: 'okokokok'
-    // },
-    // off: {
-    //   method: 'power',
-    //   value: 'off',
-    //   pass: 'okokokok'
-    // },
-    // colorR: {
-    //   method: 'ctrl',
-    //   value: this.colorRgb,
-    //   pass: 'okokokok'
-    // }
