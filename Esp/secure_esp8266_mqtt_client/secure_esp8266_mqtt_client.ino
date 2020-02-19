@@ -115,8 +115,7 @@ void callback(char *topic, byte *payload, unsigned int length)
 // Reconnect to the MQTT client.
 void reconnectToMQTT(MilliSec currentMilliSec)
 {
-  
-  
+
   if (pubsubClient.connected())
   {
     // We are connected so nothing further needs to be done.
@@ -142,7 +141,7 @@ void reconnectToMQTT(MilliSec currentMilliSec)
       DEBUG_LOGLN(topics[i]);
       pubsubClient.subscribe(topics[i]);
     }
-    
+
     change(0, 255, 0);
 
     delay(200);
@@ -179,7 +178,7 @@ void setup()
   change(255, 0, 0); // Visuell stat<us
 
   setupWifi.setupWifi();
-      //pubsubClient.setServer(broker, 1883);
+  //pubsubClient.setServer(broker, 1883);
   pubsubClient.setServer(mqtt_server, 8883);
   pubsubClient.setCallback(callback); // Initialize the callback routine
   time_now = millis();
@@ -274,6 +273,42 @@ void rawe()
 void rainbow()
 {
   DEBUG_LOGLN("Doin the rainbow");
+
+  // if (rValue >= 255 and gValue < 255 and bValue == 0)
+  // {
+  //   Serial.println("g+");
+  //   gValue += 10;
+  // }
+  // else if (rValue > 0 and gValue >= 255 and bValue == 0)
+  // {
+  //   Serial.println("r-");
+  //   rValue -= 10;
+  // }
+  // else if (rValue == 0 and gValue >= 255 and bValue < 255)
+  // {
+  //   Serial.println("b+");
+  //   bValue += 10;
+  // }
+  // else if (rValue == 0 and gValue > 0 and bValue >= 255)
+  // {
+  //   Serial.println("g-");
+  //   gValue -= 10;
+  // }
+  // else if (rValue < 255 and gValue == 0 and bValue >= 255)
+  // {
+  //   Serial.println("r+");
+  //   rValue += 10;
+  // }
+  // else if (rValue >= 255 and gValue == 0 and bValue > 0)
+  // {
+  //   Serial.println("b-");
+  //   bValue -= 10;
+  // }
+  // else
+  // {
+  //   Serial.println("Rainbow effect error");
+  // }
+  // setColor(rValue, gValue, bValue);
 
   float colorNumber = counter > numColors ? counter - numColors : counter;
 
